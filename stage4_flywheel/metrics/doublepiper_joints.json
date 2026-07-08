@@ -1,0 +1,27 @@
+{
+  "robot": "DoublePiper-Abs",
+  "n_sim_joints": 16,
+  "joint_names": [
+    "joint1_r",
+    "joint1_l",
+    "joint2_r",
+    "joint2_l",
+    "joint3_r",
+    "joint3_l",
+    "joint4_r",
+    "joint4_l",
+    "joint5_r",
+    "joint5_l",
+    "joint6_r",
+    "joint6_l",
+    "finger_joint_left_r",
+    "finger_joint_right_r",
+    "finger_joint_left_l",
+    "finger_joint_right_l"
+  ],
+  "state_dim": 16,
+  "action_dim": 12,
+  "action_layout": "[left_arm(5)|right_arm(5)|left_grip(1)|right_grip(1)] absolute joint targets",
+  "note": "joint4 (joint4_l/joint4_r) is locked at 0 in cuRobo (5-DoF active cspace); action skips joint4.",
+  "verified_via": "stage4_flywheel/datasets/raw/hard/episode_0.h5 (full PnP, 6/6 skills, 319 frames)"
+}

@@ -1,0 +1,30 @@
+## Minimal cuRobo robot config for the right AgileX Piper arm (T3 DoublePiper).
+## 5-DoF active cspace (joint1,2,3,5,6 — the DoublePiper action term skips joint4).
+## joint4_r is LOCKED at 0.0 so cuRobo plans match the sim's uncontrolled joint4_r (EE consistency).
+## Collision spheres omitted (IK/motion-planning smoke); reuses the proven single-arm kinematics.
+robot_cfg:
+  kinematics:
+    use_usd_kinematics: False
+    urdf_path: "/mnt/robot/stage4_flywheel/curobo/double_piper_description.urdf"
+    asset_root_path: "/mnt/robot/lw_benchhub/lw_benchhub/utils/piper_description"
+    base_link: "base_link_r"
+    ee_link: "gripper_base_r"
+    collision_link_names: []
+    collision_spheres: {}
+    collision_sphere_buffer: 0.0
+    extra_collision_spheres: {}
+    use_global_cumul: False
+    self_collision_ignore: {}
+    self_collision_buffer: {}
+    mesh_link_names: ["gripper_base_r", "link7_r", "link8_r"]  # gripper collision meshes — without these cuRobo has NO gripper collision model and the approach path plows through the target object (bowl) in PhysX
+    # joint4_r is passive/skipped in the DoublePiper action term; lock it so the
+    # cuRobo plan's joint4_r=0 matches the sim's uncontrolled joint4_r default.
+    lock_joints:
+      joint4_r: 0.0
+    cspace:
+      joint_names: ["joint1_r", "joint2_r", "joint3_r", "joint5_r", "joint6_r"]
+      retract_config: [0.0, 0.0, 0.0, 0.0, 0.0]
+      null_space_weight: [1.0, 1.0, 1.0, 1.0, 1.0]
+      cspace_distance_weight: [1.0, 1.0, 1.0, 1.0, 1.0]
+      max_jerk: 500.0
+      max_acceleration: 15.0

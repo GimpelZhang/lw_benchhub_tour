@@ -1,0 +1,5 @@
+_base_:
+  - g1-hand
+robot: G1-Controller-DecoupledWBC
+teleop_device: vr-controller
+layout: robocasakitchen-2-8

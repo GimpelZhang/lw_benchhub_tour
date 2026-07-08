@@ -1,0 +1,48 @@
+FROM nvcr.io/nvidia/isaac-sim:5.1.0
+
+# Environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV ACCEPT_EULA=Y
+ENV OMNI_KIT_ACCEPT_EULA=Y
+ENV PRIVACY_CONSENT=Y
+ENV HF_HOME=/root/.cache/huggingface
+ENV ISAACSIM_PATH=/isaac-sim
+ENV CARB_APP_PATH=${ISAACSIM_PATH}/kit
+ENV EXP_PATH=${ISAACSIM_PATH}/apps
+ENV ISAAC_PATH=${ISAACSIM_PATH}
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git git-lfs cmake build-essential \
+    libgl1-mesa-glx libgl1-mesa-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install pip packages in the Isaac Sim Python environment
+# The Isaac Sim container uses its own Python
+RUN ${ISAACSIM_PATH}/python.sh -m pip install --no-cache-dir \
+    torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cu118
+
+# Install Isaac Lab
+RUN cd /opt && git clone https://github.com/isaac-sim/IsaacLab.git --branch v2.3.2 --depth 1 && \
+    cd IsaacLab && ${ISAACSIM_PATH}/python.sh -m pip install -e source/isaaclab 2>&1 || true
+
+# Install IsaacLab-Arena
+RUN cd /opt && git clone https://github.com/isaac-sim/IsaacLab-Arena.git --branch release/0.1.1 --depth 1 && \
+    cd IsaacLab-Arena && ${ISAACSIM_PATH}/python.sh -m pip install -e . 2>&1 || true
+
+# Install lerobot (with patches for Python compatibility)
+RUN cd /opt && git clone https://github.com/huggingface/lerobot.git --branch v0.5.1 --depth 1 && \
+    cd lerobot && \
+    sed -i 's/requires-python = ">=3.12"/requires-python = ">=3.10"/' pyproject.toml && \
+    ${ISAACSIM_PATH}/python.sh -m pip install -e ".[pi05]" 2>&1 || true
+
+# Install additional dependencies
+RUN ${ISAACSIM_PATH}/python.sh -m pip install --no-cache-dir \
+    huggingface_hub lightwheel-sdk onnxruntime pin==4.0.0 \
+    "transformers>=5.12.1" "datasets>=3.0.0"
+
+# Create directories for mounting
+RUN mkdir -p /eval_outputs /models /workspace
+
+WORKDIR /workspace
+CMD ["/bin/bash"]

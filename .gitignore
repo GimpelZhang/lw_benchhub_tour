@@ -1,0 +1,93 @@
+# =============================================================================
+# .gitignore for lw_benchhub_tour
+# Aggregated monorepo of the LW-BenchHub + IsaacLab-Arena + lerobot VLA pipeline.
+# =============================================================================
+
+# ---- Secrets / env shims (NEVER commit; .example templates are tracked) ----
+headless_env.sh
+llm_env.sh
+deepseek_v4pro_env.sh
+*.env.sh
+!*.env.sh.example
+!headless_env.sh.example
+!llm_env.sh.example
+!deepseek_v4pro_env.sh.example
+
+# ---- Large model weights / conda env / HF cache ----
+models/
+conda/
+.cache/
+
+# ---- Datasets (too large; see docs/Complete_Stage_*.md for download/generation) ----
+stage4_flywheel/datasets/
+eval_outputs_*/
+
+# ---- docs/ : consolidated markdown reference (kept on disk, NOT committed per project spec) ----
+docs/
+
+# ---- Logs / install logs / pid files ----
+# Note: pathB_logs*/ dirs contain BOTH .log/.pid/.stdout (ignore) AND .sh launch
+# scripts (KEEP - they are source). So we do NOT exclude the dirs wholesale; we
+# exclude only the log/pid/stdout/json extensions + the v1-v5 historical log trees.
+*.log
+*.pid
+*.stdout
+pathB_headcam_logs/
+autosim_install_logs/
+v5_install_logs/
+v6_install_logs/
+stage3_logs/
+stage4_flywheel/logs/
+# historical stage2 v1-v5 log+manifest trees (canonical is v6; keep v6 .sh scripts + manifest)
+pathB_logs_v2/
+pathB_logs_v3/
+pathB_logs_v4/
+pathB_logs_v5/
+# in pathB_logs/ and pathB_logs_v6/, ignore everything except .sh + key manifests
+pathB_logs/*
+!pathB_logs/run_pathB.sh
+!pathB_logs/run_stage2*.sh
+pathB_logs_v6/*
+!pathB_logs_v6/run_stage2_v6_all.sh
+!pathB_logs_v6/run_stage2_v6_scene.sh
+!pathB_logs_v6/final_manifest.json
+!pathB_logs_v6/smoketest_v6.json
+!pathB_logs_v6/scene_reach_reports/
+
+# ---- Python caches / build artifacts ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+*.so
+
+# ---- OMC orchestrator state (session-local, not source) ----
+.omc/
+
+# ---- Legacy / archived superseded code (kept on disk, not in repo) ----
+_legacy/
+_git_backups/
+
+# ---- Temp planning scratch dirs ----
+.tmp_stage3_plan*/
+.tmp_stage3_plan/
+
+# ---- Editor / OS cruft ----
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# ---- Nested-repo leftover .git dirs after absorb (safety; should not exist) ----
+*/.git/
+*/*/.git/
+
+# ---- Misc binary outputs ----
+*.mp4
+*.hdf5
+*.h5
+*.tar.gz
+!_git_backups/*.tar.gz

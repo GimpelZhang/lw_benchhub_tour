@@ -1,0 +1,37 @@
+disable_fabric: false
+num_envs: 1
+device: cuda:0
+sensitivity: 1.0
+step_hz: 50
+enable_cameras: true
+execute_mode: eval
+episode_length_s: 20.0
+robot: DoublePiper-Abs
+robot_scale: 1.0
+task: L90K1PutTheBlackBowlOnThePlate
+scene_backend: robocasa
+task_backend: robocasa
+debug_assets: null
+layout: libero-1-1
+sources:
+- objaverse
+- lightwheel
+- aigen_objs
+object_projects: []
+usd_simplify: false
+seed: 48
+max_scene_retry: 4
+max_object_placement_retry: 3
+resample_objects_placement_on_reset: true
+resample_robot_placement_on_reset: true
+replay_cfgs:
+  add_camera_to_observation: true
+  render_resolution:
+  - 640
+  - 480
+fix_object_pose_cfg:
+  akita_black_bowl:
+    pos:
+    - 2.291419744491577
+    - -2.0936230659484862
+    - 0.8101065158843994

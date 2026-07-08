@@ -1,0 +1,8 @@
+_base_:
+  - teleop_base
+debug_assets: fixture
+task: CloseDrawer
+layout: /your/local/scene.usd
+# test_fixture_path: ./test_fixtures/sink_main_group_002.usd
+test_fixture_path: /your/local/sink.usd
+test_fixture_type: sink

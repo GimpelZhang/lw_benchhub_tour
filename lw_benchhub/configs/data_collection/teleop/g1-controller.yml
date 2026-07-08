@@ -1,0 +1,7 @@
+_base_:
+  - teleop_base
+robot: G1-Controller
+enable_pinocchio: true
+teleop_device: vr-controller
+task: CloseDishwasher
+layout: robocasakitchen

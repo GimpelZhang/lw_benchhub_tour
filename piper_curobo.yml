@@ -1,0 +1,31 @@
+## Minimal cuRobo robot config for AgileX Piper 6-DoF arm
+## Used only for reachability/IK checks — collision spheres omitted (set to []),
+## self-collision ignore left empty. This is sufficient for IK feasibility
+## sampling because we only verify a position-only inverse-kinematics target
+## within the workspace envelope, not full motion planning.
+robot_cfg:
+  kinematics:
+    use_usd_kinematics: False
+    urdf_path: "/mnt/robot/lw_benchhub/lw_benchhub/utils/piper_description/urdf/piper_description.urdf"
+    asset_root_path: "/mnt/robot/lw_benchhub/lw_benchhub/utils/piper_description"
+    base_link: "base_link"
+    ee_link: "gripper_base"
+    collision_link_names: []
+    collision_spheres: {}
+    collision_sphere_buffer: 0.0
+    extra_collision_spheres: {}
+    use_global_cumul: False
+    self_collision_ignore: {}
+    self_collision_buffer: {}
+    mesh_link_names: []
+    # joint7/joint8 are prismatic gripper fingers attached BELOW gripper_base
+    # (the chosen ee_link). They are outside the IK chain entirely, so we leave
+    # lock_joints empty; cuRobo will simply ignore them.
+    lock_joints: {}
+    cspace:
+      joint_names: ["joint1", "joint2", "joint3", "joint4", "joint5", "joint6"]
+      retract_config: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      null_space_weight: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+      cspace_distance_weight: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+      max_jerk: 500.0
+      max_acceleration: 15.0

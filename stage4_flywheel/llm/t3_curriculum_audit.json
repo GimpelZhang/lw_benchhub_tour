@@ -1,0 +1,31 @@
+{
+  "deterministic": {
+    "easy": {
+      "seed": 15,
+      "dist_to_robot": 0.22754660172312788
+    },
+    "medium": {
+      "seed": 6,
+      "dist_to_robot": 0.29265958367611444
+    },
+    "hard": {
+      "seed": 48,
+      "dist_to_robot": 0.3845341949784135
+    }
+  },
+  "llm": {
+    "easy": {
+      "seed": 15,
+      "rationale": "One of the three closest placements (0.228 m)."
+    },
+    "medium": {
+      "seed": 6,
+      "rationale": "Placed near the middle of the sorted distance list (0.293 m)."
+    },
+    "hard": {
+      "seed": 48,
+      "rationale": "The single farthest placement (0.385 m)."
+    }
+  },
+  "llm_validated": true
+}

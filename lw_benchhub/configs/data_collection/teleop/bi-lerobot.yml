@@ -1,0 +1,7 @@
+_base_:
+  - teleop_base
+robot: LeRobot-BiARM-RL
+teleop_device: bi_so101leader
+left_port: /dev/ttyACM0
+right_port: /dev/ttyACM1
+recalibrate: false

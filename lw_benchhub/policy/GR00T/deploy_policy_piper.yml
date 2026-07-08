@@ -1,0 +1,101 @@
+# Basic experiment configuration (keep unchanged)
+policy_name: 'GR00TPolicy'
+
+checkpoint: '/path/to/your/checkpoint' # 'nvidia/GR00T-N1.5-3B' # To be provided by the user
+seed: 0
+
+height: 480
+width: 480
+
+# Add Parameters You Need
+embodiment_tag: 'new_embodiment'
+action_horizon: 16
+denoising_steps: 4
+num_feedback_actions: 16
+data_config: 'piper' # change this
+
+instruction: 'Grab the block and lift it up.'
+
+observation_config:
+  custom_mapping:
+    video.front: eye_in_hand_camera
+    video.wrist: left_hand_camera
+    state.single_arm: {joint_pos:[0,1,2,3,4,5]}
+    state.gripper: {joint_pos:[6,7]}
+
+record_camera: ["eye_in_hand_camera"]
+time_out_limit: 60
+test_num: 10
+
+env_cfg:
+  # =========================
+  # Basic Settings
+  # =========================
+  disable_fabric: false
+  num_envs: 1
+  device: cuda:0 #cpu
+  sensitivity: 1.0
+  step_hz: 50
+
+  # =========================
+  # Robot Settings
+  # =========================
+  robot: Piper-Abs-deploy
+  robot_scale: 1.0
+
+  # =========================
+  # Task & Scene Settings
+  # =========================
+  task: LiftObj
+  scene_backend: robocasa
+  task_backend: robocasa
+  debug_assets: null
+  layout: robocasakitchen-9-8
+  sources:
+    - objaverse
+    - lightwheel
+    - aigen_objs
+  object_projects: []
+  usd_simplify: false
+  seed: 42 #0
+
+  # =========================
+  # Data Collection Settings
+  # =========================
+  record: false
+  dataset_file: ./datasets/dataset.hdf5
+  num_demos: 1
+  enable_debug_log: false
+  continue_teleop_after_success: false
+
+  # =========================
+  # Teleoperation Device Settings
+  # =========================
+  enable_pinocchio: false
+  teleop_device: keyboard
+  relative_control: false
+  first_person_view: false
+  enable_rendering_optimization: true
+  enable_multiple_viewports: false
+  action_delay_async: false
+  action_delay_time_s: 0
+  action_delay_type: fixed
+  action_buffer_size: 100
+
+
+  # =========================
+  # Video Saving Settings
+  # =========================
+  enable_cameras: true
+  save_video: false
+  video_save_dir: ./videos
+  video_fps: 30
+
+  # =========================
+  # Object Placement Retry Settings
+  # =========================
+  max_scene_retry: 4
+  max_object_placement_retry: 3
+
+  resample_objects_placement_on_reset: true
+  resample_robot_placement_on_reset: true

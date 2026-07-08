@@ -1,0 +1,41 @@
+# Basic experiment configuration (keep unchanged)
+policy_name: PIPolicy
+
+train_config_name: your_train_config_name
+checkpoint: /path/to/your/checkpoint
+instruction: "your_instruction"
+
+observation_config:
+  custom_mapping:
+    images/front: global_camera
+    images/wrist: hand_camera
+    state: joint_pos
+    action: joint_target_pos
+
+record_camera: ["global_camera"]
+time_out_limit: 500
+
+height: 224
+width: 224
+
+env_cfg:
+  task: LiftObj
+  robot: Piper-Abs-Deploy
+  layout: robocasakitchen-9-8
+  scene_backend: robocasa
+  task_backend: robocasa
+  device: cuda:0
+  num_envs: 1
+  usd_simplify: false
+  enable_cameras: true
+  video: false
+  disable_fabric: false
+  robot_scale: 1.0
+  seed: 42
+  sources: null
+  object_projects: null
+  for_rl: false
+  variant: Visual 
+
+  concatenate_terms: false
+  distributed: false

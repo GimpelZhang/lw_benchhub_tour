@@ -1,0 +1,4 @@
+_base_:
+  - g1_liftobj_state
+max_iterations: 2         # Max RL policy training iterations
+num_envs: 10                 # Number of environments to simulate

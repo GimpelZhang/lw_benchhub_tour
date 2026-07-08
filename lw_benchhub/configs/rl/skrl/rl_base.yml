@@ -1,0 +1,51 @@
+remote_protocal: ipc         # restful or ipc
+for_rl: true
+concatenate_terms: false
+disable_fabric: false        # Disable fabric and use USD I/O operations
+device: cuda:0
+
+# Environment Configuration
+num_envs: 10                 # Number of environments to simulate
+layout: robocasakitchen      # Scene layout
+sources:                     # Object source name
+  - objaverse
+  - lightwheel
+  - aigen_objs
+object_projects: []          # Object project name
+scene_backend: robocasa      # Scene backend name
+task_backend: robocasa       # task backedn name
+debug_assets: null           # Debug assets name
+robot: null                  # Robot cfg name
+task: null                   # Task cfg name
+rl: null                     # RL cfg name
+usd_simplify: false          # USD simplify enable
+enable_rendering_optimization: true    # Enable optimization
+
+# Asset and Export Paths
+export_base_path: null       # Export base path (replace with actual ASSET_PATH if defined in code)
+robot_scale: 1.0             # Robot scale
+first_person_view: false     # Enable first-person view
+
+# Reinforcement Learning Settings
+video: false                 # Record videos during training
+video_length: 200            # Length of recorded video (in steps)
+video_interval: 2000         # Interval between video recordings (in steps)
+seed: null                   # Seed used for the environment
+distributed: false           # Run training with multiple GPUs or nodes
+max_iterations: null         # Max RL policy training iterations
+
+# ML Framework Settings
+ml_framework: "torch"        # The ML framework used for training
+# Options: ["torch", "jax", "jax-numpy"]
+
+algorithm: "PPO"             # The RL algorithm used for training
+# Options: ["AMP", "PPO", "IPPO", "MAPPO"]
+
+# Checkpoint
+checkpoint: null
+
+# Play Settings
+use_pretrained_checkpoint: false
+real_time: false
+enable_cameras: false
+check_success: true

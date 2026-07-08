@@ -1,0 +1,50 @@
+# Basic experiment configuration (keep unchanged)
+policy_name: 'GR00TPolicy'
+checkpoint: '/path/to/your/checkpoint' # 'nvidia/GR00T-N1.5-3B' # To be provided by the user
+seed: 0
+
+# Add Parameters You Need
+embodiment_tag: 'new_embodiment'
+action_horizon: 16
+denoising_steps: 4
+num_feedback_actions: 16
+data_config: 'so100_dualcam'
+
+instruction: 'Grab the block and lift it up.'
+
+observation_config:
+  custom_mapping:
+    video.front: global_camera_rgb
+    video.wrist: hand_camera_rgb
+    state.single_arm: {joint_pos:[0,1,2,3,4]}
+    state.gripper: {joint_pos:[5]}
+
+record_camera: ["global_camera_rgb"]
+time_out_limit: 50
+
+height: 480
+width: 480
+
+
+env_cfg:
+  task: LiftObj
+  robot: LeRobot-AbsJointGripper-RL
+  layout: robocasakitchen-9-8
+  scene_backend: robocasa
+  task_backend: robocasa
+  device: cuda:0
+  num_envs: 1
+  usd_simplify: false
+  enable_cameras: true
+  video: false
+  disable_fabric: false
+  robot_scale: 1.0
+  seed: 42
+  sources: null
+  object_projects: null
+  for_rl: false
+  variant: Visual 
+
+  concatenate_terms: false
+  distributed: false
+  add_camera_to_observation: true

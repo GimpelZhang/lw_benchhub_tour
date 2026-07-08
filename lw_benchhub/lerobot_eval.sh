@@ -1,0 +1,13 @@
+lerobot-eval \
+  --policy.path=LightwheelAI/smolvla-double-piper-pnp \
+  --env.type=isaaclab_arena \
+  --rename_map='{"observation.images.left_hand_camera_rgb": "observation.images.left_hand", "observation.images.right_hand_camera_rgb": "observation.images.right_hand", "observation.images.first_person_camera_rgb": "observation.images.first_person"}' \
+  --env.hub_path=LightwheelAI/lw_benchhub_env \
+  --env.kwargs='{"config_path": "configs/envhub/example.yml"}' \
+  --trust_remote_code=true \
+  --env.state_keys=joint_pos \
+  --env.action_dim=12 \
+  --env.camera_keys=left_hand_camera_rgb,right_hand_camera_rgb,first_person_camera_rgb \
+  --policy.device=cuda \
+  --eval.batch_size=10 \
+  --eval.n_episodes=100

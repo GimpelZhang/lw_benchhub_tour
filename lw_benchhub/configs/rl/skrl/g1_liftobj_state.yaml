@@ -1,0 +1,9 @@
+_base_:
+  - rl_base
+task: LiftObj                # Task name
+robot: G1-RL                 # Robot type
+rl: G1LiftObjStateRL
+layout: robocasakitchen-9-8  # Scene layout
+num_envs: 512
+usd_simplify: true # USD simplify enable
+enable_cameras: false

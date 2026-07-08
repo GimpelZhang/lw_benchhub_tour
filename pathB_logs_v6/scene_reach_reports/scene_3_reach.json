@@ -1,0 +1,16 @@
+{
+  "scene_yml": "/mnt/robot/lw_benchhub/configs/envhub/generated_v6/scene_variation_3.yml",
+  "threshold": 0.5,
+  "passed": false,
+  "n_objects": 0,
+  "n_reachable_either_arm": 0,
+  "reach_ratio": null,
+  "per_object": [],
+  "robot_pose": null,
+  "check_kind": "v5-live-isaaclab+curobo-ik",
+  "layout": "robocasakitchen-61-5",
+  "task": "ArrangeTableware",
+  "robot": "DoublePiper-Abs",
+  "seed": 56,
+  "error_note": "Traceback (most recent call last):\n  File \"/mnt/robot/validate_scene_objects_reach_v5.py\", line 273, in main\n    raw_env, app_launcher = _boot_env(args.scene_yml)\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/robot/validate_scene_objects_reach_v5.py\", line 130, in _boot_env\n    raw_env, environment, task, render_mode, episode_length, app_launcher = export_env_for_envhub(\n                                                                            ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/robot/lw_benchhub/lw_benchhub/utils/envhub_utils.py\", line 126, in export_env_for_envhub\n    env_name, env_cfg = _make_env_cfg(cfg)\n                        ^^^^^^^^^^^^^^^^^^\n  File \"/mnt/robot/lw_benchhub/lw_benchhub/utils/envhub_utils.py\", line 54, in _make_env_cfg\n    env_cfg = parse_env_cfg(\n              ^^^^^^^^^^^^^^\n  File \"/mnt/robot/lw_benchhub/lw_benchhub/utils/env.py\", line 272, in parse_env_cfg\n    task = load_cfg_cls_from_registry(\"task\", task_name, \"env_cfg_entry_point\", backend=task_backend)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/robot/lw_benchhub/lw_benchhub/utils/env.py\", line 113, in load_cfg_cls_from_registry\n    cfg_entry_point = gym.spec(cfg_name).kwargs.get(entry_point_key)\n                      ^^^^^^^^^^^^^^^^^^\n  File \"/mnt/robot/conda/envs/lerobot-arena/lib/python3.11/site-packages/gymnasium/envs/registration.py\", line 1000, in spec\n    _check_version_exists(ns, name, version)\n  File \"/mnt/robot/conda/envs/lerobot-arena/lib/python3.11/site-packages/gymnasium/envs/registration.py\", line 392, in _check_version_exists\n    _check_name_exists(ns, name)\n  File \"/mnt/robot/conda/envs/lerobot-arena/lib/python3.11/site-packages/gymnasium/envs/registration.py\", line 369, in _check_name_exists\n    raise error.NameNotFound(\ngymnasium.error.NameNotFound: Environment `Robocasa-Task-ArrangeTableware` doesn't exist. Did you mean: `Robocasa-Task-ArrangeTea`?\n"
+}

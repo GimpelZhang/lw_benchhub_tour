@@ -1,0 +1,20 @@
+## Code Analysis Guidelines
+**CRITICAL: Plan skills based on success conditions in `_check_success()` method!**
+
+Carefully read the following methods in the code:
+- **`_check_success()`**: **MOST IMPORTANT** - This defines what the task needs to achieve. Your skill sequence MUST
+satisfy these conditions. Analyze what object states, positions, or interactions are required for success.
+- `_get_obj_cfgs()`: Understand object placement and initial positions
+- `get_ep_meta()`: Understand task language description
+- `_setup_kitchen_references()`: Understand fixtures and scene setup
+- Class inheritance: Check parent classes for additional context
+- Class attributes like `behavior`: May define task variants
+
+## Important Notes
+1. **Base your plan on `_check_success()` method** - don't add unnecessary steps
+2. If the task class has a `behavior` attribute, analyze the specific behavior variant
+3. Objects with `graspable=True` in `_get_obj_cfgs()` are manipulable objects
+4. The step numbers should be globally sequential across all subtasks
+5. Each subtask should be a logical unit that contributes to success conditions
+6. Use `lift(up)`, `push(forward)`, `pull(back)` for directional movements without specific targets
+7. Output ONLY valid JSON, no additional text or explanation

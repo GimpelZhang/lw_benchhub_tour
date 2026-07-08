@@ -1,0 +1,290 @@
+{
+  "description": "T3 seed-based curriculum for the DoublePiper PnP fine-tuning dataset. 3 seeds per difficulty band (easy/medium/hard), even 3/3/3 distribution. Bands = distance tertiles of REACHABLE seeds (>=0.260m; closer seeds hang/plan-fail).",
+  "task": "L90K1PutTheBlackBowlOnThePlate",
+  "robot": "DoublePiper-Abs",
+  "distribution_target": "3 easy + 3 medium + 3 hard (even)",
+  "reachable_threshold_m": 0.26,
+  "bands": {
+    "easy": {
+      "dist_range_m": "0.260-0.287",
+      "seeds": [
+        13,
+        7,
+        23,
+        52,
+        5,
+        28
+      ],
+      "seed_details": [
+        {
+          "seed": 13,
+          "dist_to_robot_m": 0.2604
+        },
+        {
+          "seed": 7,
+          "dist_to_robot_m": 0.2623
+        },
+        {
+          "seed": 23,
+          "dist_to_robot_m": 0.263
+        },
+        {
+          "seed": 52,
+          "dist_to_robot_m": 0.2774
+        },
+        {
+          "seed": 5,
+          "dist_to_robot_m": 0.2849
+        },
+        {
+          "seed": 28,
+          "dist_to_robot_m": 0.2869
+        }
+      ]
+    },
+    "medium": {
+      "dist_range_m": "0.287-0.325",
+      "seeds": [
+        32,
+        20,
+        51,
+        27,
+        10,
+        30
+      ],
+      "seed_details": [
+        {
+          "seed": 32,
+          "dist_to_robot_m": 0.2873
+        },
+        {
+          "seed": 20,
+          "dist_to_robot_m": 0.288
+        },
+        {
+          "seed": 51,
+          "dist_to_robot_m": 0.2891
+        },
+        {
+          "seed": 27,
+          "dist_to_robot_m": 0.2991
+        },
+        {
+          "seed": 10,
+          "dist_to_robot_m": 0.3241
+        },
+        {
+          "seed": 30,
+          "dist_to_robot_m": 0.3251
+        }
+      ]
+    },
+    "hard": {
+      "dist_range_m": "0.326-0.385",
+      "seeds": [
+        41,
+        39,
+        12,
+        4,
+        36,
+        48
+      ],
+      "seed_details": [
+        {
+          "seed": 41,
+          "dist_to_robot_m": 0.3261
+        },
+        {
+          "seed": 39,
+          "dist_to_robot_m": 0.3295
+        },
+        {
+          "seed": 12,
+          "dist_to_robot_m": 0.3341
+        },
+        {
+          "seed": 4,
+          "dist_to_robot_m": 0.3517
+        },
+        {
+          "seed": 36,
+          "dist_to_robot_m": 0.384
+        },
+        {
+          "seed": 48,
+          "dist_to_robot_m": 0.3845
+        }
+      ]
+    }
+  },
+  "episodes": [
+    {
+      "difficulty": "easy",
+      "seed": 13,
+      "episode_id": 0,
+      "n_frames": 324,
+      "success": true,
+      "state_dim": 16,
+      "action_dim": 12
+    },
+    {
+      "difficulty": "easy",
+      "seed": 16,
+      "episode_id": 1,
+      "n_frames": 279,
+      "success": true,
+      "state_dim": 16,
+      "action_dim": 12
+    },
+    {
+      "difficulty": "easy",
+      "seed": 28,
+      "episode_id": 2,
+      "n_frames": 70,
+      "success": false,
+      "state_dim": 16,
+      "action_dim": 12
+    },
+    {
+      "difficulty": "easy",
+      "seed": 45,
+      "episode_id": 3,
+      "n_frames": 0,
+      "success": false,
+      "state_dim": 0,
+      "action_dim": 0
+    },
+    {
+      "difficulty": "easy",
+      "seed": 53,
+      "episode_id": 4,
+      "n_frames": 143,
+      "success": false,
+      "state_dim": 16,
+      "action_dim": 12
+    },
+    {
+      "difficulty": "easy",
+      "seed": 61,
+      "episode_id": 5,
+      "n_frames": 0,
+      "success": false,
+      "state_dim": 0,
+      "action_dim": 0
+    },
+    {
+      "difficulty": "easy",
+      "seed": 3,
+      "episode_id": 6,
+      "n_frames": 317,
+      "success": true,
+      "state_dim": 16,
+      "action_dim": 12
+    },
+    {
+      "difficulty": "medium",
+      "seed": 30,
+      "episode_id": 0,
+      "n_frames": 78,
+      "success": false,
+      "state_dim": 16,
+      "action_dim": 12
+    },
+    {
+      "difficulty": "medium",
+      "seed": 51,
+      "episode_id": 1,
+      "n_frames": 295,
+      "success": true,
+      "state_dim": 16,
+      "action_dim": 12
+    },
+    {
+      "difficulty": "medium",
+      "seed": 27,
+      "episode_id": 2,
+      "n_frames": 0,
+      "success": false,
+      "state_dim": 0,
+      "action_dim": 0
+    },
+    {
+      "difficulty": "medium",
+      "seed": 10,
+      "episode_id": 3,
+      "n_frames": 0,
+      "success": false,
+      "state_dim": 0,
+      "action_dim": 0
+    },
+    {
+      "difficulty": "medium",
+      "seed": 30,
+      "episode_id": 4,
+      "n_frames": 331,
+      "success": true,
+      "state_dim": 16,
+      "action_dim": 12
+    },
+    {
+      "difficulty": "medium",
+      "seed": 22,
+      "episode_id": 5,
+      "n_frames": 78,
+      "success": false,
+      "state_dim": 16,
+      "action_dim": 12
+    },
+    {
+      "difficulty": "medium",
+      "seed": 24,
+      "episode_id": 6,
+      "n_frames": 0,
+      "success": false,
+      "state_dim": 0,
+      "action_dim": 0
+    },
+    {
+      "difficulty": "medium",
+      "seed": 17,
+      "episode_id": 7,
+      "n_frames": 72,
+      "success": false,
+      "state_dim": 16,
+      "action_dim": 12
+    },
+    {
+      "difficulty": "hard",
+      "seed": 39,
+      "episode_id": 0,
+      "n_frames": 318,
+      "success": true,
+      "state_dim": 16,
+      "action_dim": 12
+    },
+    {
+      "difficulty": "hard",
+      "seed": 48,
+      "episode_id": 1,
+      "n_frames": 263,
+      "success": true,
+      "state_dim": 16,
+      "action_dim": 12
+    },
+    {
+      "difficulty": "hard",
+      "seed": 2,
+      "episode_id": 2,
+      "n_frames": 347,
+      "success": true,
+      "state_dim": 16,
+      "action_dim": 12
+    }
+  ],
+  "n_successful": 8,
+  "distribution_actual": {
+    "easy": 3,
+    "medium": 2,
+    "hard": 3
+  }
+}

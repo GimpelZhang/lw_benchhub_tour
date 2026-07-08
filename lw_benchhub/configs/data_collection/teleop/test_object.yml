@@ -1,0 +1,7 @@
+_base_:
+  - teleop_base
+debug_assets: object
+layout: robocasakitchen-2-2
+task: TestObjectsTask
+# layout: ./test_scene_usd/scene.usd
+test_object_paths: ['/your/local/obj1.usd','/your/local/obj2.usd']

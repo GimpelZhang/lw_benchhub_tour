@@ -1,0 +1,3 @@
+{
+  "response": "{\"easy\": {\"object\": \"akita_black_bowl\", \"position\": [2.291419744491577, -2.0936230659484863, 0.8101065158843994], \"rationale\": \"Bowl shifted +0.10m in Y toward robot from hard scene to reduce reach distance, easing the task.\"}, \"medium\": {\"object\": \"akita_black_bowl\", \"position\": [2.291419744491577, -1.9736230659484863, 0.8101065158843994], \"rationale\": \"Bowl shifted +0.22m in Y toward robot from hard scene, providing a moderate easiness by bringing the target closer.\"}}"
+}

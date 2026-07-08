@@ -1,0 +1,32 @@
+LW-BenchHub Docker Image Build Guide
+
+1) Prerequisites
+- Docker installed (GPU runtime if needed)
+- Git (submodules initialized)
+- Network access to base images and Python package indexes
+
+2) Repository Setup
+- Update submodules:
+  git submodule update --init --recursive
+- Ensure third_party/IsaacLab exists and is a Git repository
+- Ensure third_party/robosuite exists and is a Git repository
+- Ensure third_party/robocasa_upload exists and is a Git repository
+- Ensure third_party/robocasa exists and is the right submodule repository
+
+3) Build Command (run at repo root)
+./docker/release_build.sh <DOCKER_TAG> <FULL_LW_BENCHHUB_COMMIT>
+
+Example:
+./docker/release_build.sh v1.2.3 $(git rev-parse HEAD)
+
+This produces an image:
+harbor.lightwheel.net/robot/lw_benchhub:v1.2.3_<8-char-commit>
+
+4) Troubleshooting
+- IsaacLab commit mismatch: checkout the commit specified in release_build.sh (IsaacLab_commit) or update that variable if intentionally using another commit.
+- Uncommitted changes: commit or stash before running the build script.
+- Anaconda ToS error: handled in the Dockerfile via "conda tos accept". If needed, rebuild to apply changes.
+- Slow Python installs: additional mirrors can be set via --extra-index-url in environment.yml or pip config inside the container.
+- PATH/conda not found: ensure ENV lines are present early in the Dockerfile and that Miniconda installs to /opt/conda successfully.
+
+

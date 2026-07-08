@@ -1,0 +1,9 @@
+_base_:
+  - teleop_base
+scene_backend: local
+task_backend: local
+task: BaseTask
+record: true
+robot: G1-Controller
+teleop_device: vr-controller
+layout: "/path/to/your/local/scene.usd"

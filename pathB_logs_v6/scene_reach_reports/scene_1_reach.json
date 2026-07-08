@@ -1,0 +1,61 @@
+{
+  "scene_yml": "/mnt/robot/lw_benchhub/configs/envhub/generated_v6/scene_variation_1.yml",
+  "threshold": 0.5,
+  "passed": true,
+  "n_objects": 1,
+  "n_reachable_either_arm": 1,
+  "reach_ratio": 1.0,
+  "per_object": [
+    {
+      "name": "chefmate_8_frypan",
+      "world_pos": [
+        2.936211347579956,
+        -1.9952669143676758,
+        0.8048999905586243
+      ],
+      "arm_base_left_world": [
+        2.580000019202254,
+        -1.839880590998551,
+        0.75
+      ],
+      "arm_base_right_world": [
+        2.28000011431215,
+        -1.8401194757586512,
+        0.75
+      ],
+      "local_left": [
+        0.1556699189656161,
+        0.356087484031691,
+        0.05489999055862427
+      ],
+      "local_right": [
+        0.15566991896561597,
+        0.6560874840316909,
+        0.05489999055862427
+      ],
+      "left_err": 0.007190831936895847,
+      "right_err": 0.05549994856119156,
+      "either_arm_reach": true
+    }
+  ],
+  "robot_pose": {
+    "name": "robot",
+    "world_pos": [
+      2.430000066757202,
+      -1.840000033378601,
+      0.75
+    ],
+    "world_quat_wxyz": [
+      0.7073882222175598,
+      0.0,
+      0.0,
+      -0.7068251967430115
+    ],
+    "yaw_rad": -1.5700000441770803
+  },
+  "check_kind": "v5-live-isaaclab+curobo-ik",
+  "layout": "libero-1-1",
+  "task": "L10K3TurnOnTheStoveAndPutTheMokaPotOnIt",
+  "robot": "DoublePiper-Abs",
+  "seed": 12
+}

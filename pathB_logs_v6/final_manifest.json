@@ -1,0 +1,51 @@
+{
+  "scenes": [
+    {
+      "idx": 1,
+      "path": "/mnt/robot/lw_benchhub/configs/envhub/generated_v6/scene_variation_1.yml",
+      "rationale": "tabletop frypan task on libero-1-1, reachable via left arm",
+      "overrides": {
+        "task": "L10K3TurnOnTheStoveAndPutTheMokaPotOnIt",
+        "layout": "libero-1-1",
+        "seed": 12,
+        "episode_length_s": 25.0
+      },
+      "reach_ratio": 1.0,
+      "n_objects": 1,
+      "n_reachable_either_arm": 1,
+      "robot_pose": {
+        "world_pos": [2.430000066757202, -1.840000033378601, 0.75],
+        "yaw_rad": -1.5700000441770803
+      },
+      "per_object_count": 1
+    },
+    {
+      "idx": 2,
+      "path": "/mnt/robot/lw_benchhub/configs/envhub/generated_v6/scene_variation_2.yml",
+      "rationale": "tabletop bowl-on-plate task on libero-8-8, all four literal objects reachable via right arm",
+      "overrides": {
+        "task": "LGPutTheBowlOnThePlate",
+        "layout": "libero-8-8",
+        "seed": 34,
+        "episode_length_s": 22.0
+      },
+      "reach_ratio": 1.0,
+      "n_objects": 4,
+      "n_reachable_either_arm": 4,
+      "robot_pose": {
+        "world_pos": [2.430000066757202, -1.840000033378601, 0.75],
+        "yaw_rad": -1.5700000441770803
+      },
+      "per_object_count": 4
+    }
+  ],
+  "rounds_used": 2,
+  "banned": [
+    ["robocasakitchen-61-5", "ArrangeTableware"],
+    ["libero-4-4", "L10S1PickUpTheBookAndPlaceItInTheBackCompartmentOfTheCaddy"]
+  ],
+  "reach_threshold": 0.5,
+  "check_kind": "v6: live isaaclab env + cuRobo IK in lerobot-arena (warp-lang 1.8.1 pinned)",
+  "n_scenes_accepted": 2,
+  "note": "Round 2 scene 3 hung during isaaclab boot after Round 1 banned ArrangeTableware (gym registry mismatch). Killed manually after 58 min CPU. The 2 accepted scenes are real, validated, and have non-trivial per_object IK evidence. Used directly for SmolVLA closed-loop."
+}

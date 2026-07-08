@@ -1,0 +1,21 @@
+{
+  "task": "L90K1PutTheBlackBowlOnThePlate",
+  "robot": "DoublePiper-Abs",
+  "layout": "libero-1-1",
+  "hard_scene_yml": "/mnt/robot/stage4_flywheel/configs/hard_scene.yml",
+  "hard_seed": 48,
+  "akita_black_bowl_world": [
+    2.291419744491577,
+    -2.1936230659484863,
+    0.8101065158843994
+  ],
+  "robot_base_world": [
+    2.430000066757202,
+    -1.840000033378601,
+    0.75
+  ],
+  "dist_to_robot_m": 0.3845341949784135,
+  "baseline_metrics": "/mnt/robot/stage4_flywheel/metrics/baseline/hard_scene_metrics.json",
+  "head_video": "/mnt/robot/stage4_flywheel/videos/hard_scene_head_view.mp4",
+  "head_frame0": "/mnt/robot/stage4_flywheel/videos/hard_scene_frame0.png"
+}

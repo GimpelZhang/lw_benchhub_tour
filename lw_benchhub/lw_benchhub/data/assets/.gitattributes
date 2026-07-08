@@ -1,0 +1,5 @@
+so101_follower.usd filter=lfs diff=lfs merge=lfs -text
+omron_franka.usd filter=lfs diff=lfs merge=lfs -text
+panda_2.usd filter=lfs diff=lfs merge=lfs -text
+g1_three_fingers.usd filter=lfs diff=lfs merge=lfs -text
+textures filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,48 @@
+remote_protocal: ipc         # restful or ipc
+disable_fabric: false        # Disable fabric and use USD I/O operations
+
+# Environment Configuration
+num_envs: 10                 # Number of environments to simulate
+layout: robocasakitchen      # Scene layout
+robot: null                  # Robot cfg name
+task: null                   # Task cfg name
+variant: null                # RL variant name, define when register the RL config
+usd_simplify: false          # USD simplify enable
+sources:
+  - objaverse
+  - lightwheel
+  - aigen_objs
+object_projects: []
+
+
+# Asset and Export Paths
+robot_scale: 1.0             # Robot scale
+first_person_view: false     # Enable first-person view
+
+# Reinforcement Learning Settings
+video: false                 # Record videos during training
+video_length: 200            # Length of recorded video (in steps)
+video_interval: 2000         # Interval between video recordings (in steps)
+seed: null                   # Seed used for the environment
+distributed: false           # Run training with multiple GPUs or nodes
+
+
+# Play Settings
+enable_cameras: false
+device: cuda:0
+
+
+# restful settings
+restful_port: 8001
+restful_host: 0.0.0.0
+
+# ipc settings
+ipc_port: 50000
+ipc_host: 127.0.0.1
+ipc_authkey: lightwheel
+
+
+# RL setting
+for_rl: false
+concatenate_terms: false    # only skrl need to be true
+varient: null

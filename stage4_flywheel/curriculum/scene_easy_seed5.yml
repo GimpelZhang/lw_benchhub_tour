@@ -1,0 +1,49 @@
+# =========================
+# Basic Settings
+# =========================
+disable_fabric: false
+num_envs: 1
+device: cuda:0
+sensitivity: 1.0
+step_hz: 50
+enable_cameras: true
+execute_mode: eval
+episode_length_s: 20.0  # Episode length in seconds (default: 8.0). Increase if episodes timeout during eval.
+
+# =========================
+# Robot Settings
+# =========================
+robot: DoublePiper-Abs
+robot_scale: 1.0
+
+# =========================
+# Task & Scene Settings
+# =========================
+task: L90K1PutTheBlackBowlOnThePlate
+scene_backend: robocasa
+task_backend: robocasa
+debug_assets: null
+layout: libero-1-1
+sources:
+  - objaverse
+  - lightwheel
+  - aigen_objs
+object_projects: []
+usd_simplify: false
+seed: 5
+
+# =========================
+# Object Placement Retry Settings
+# =========================
+max_scene_retry: 4
+max_object_placement_retry: 3
+
+resample_objects_placement_on_reset: true
+resample_robot_placement_on_reset: true
+
+# =========================
+# Replay Configuration Settings (camera resolution, etc.)
+# =========================
+replay_cfgs:
+  add_camera_to_observation: true
+  render_resolution: [640, 480]

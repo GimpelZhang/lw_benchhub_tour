@@ -1,0 +1,10 @@
+_base_: 
+  - env_server_skrl
+task: LiftObj                # Task name
+robot: LeRobot-RL                 # Robot type
+layout: robocasakitchen-9-8  # Scene layout
+num_envs: 100
+usd_simplify: true # USD simplify enable
+variant: State
+for_rl: true
+enable_cameras: true

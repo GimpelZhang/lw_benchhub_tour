@@ -1,0 +1,39 @@
+# Copyright (c) 2025, The Isaac Lab Arena Project Developers (https://github.com/isaac-sim/IsaacLab-Arena/blob/main/CONTRIBUTORS.md).
+# All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+"""Constants for the WBC PINK action."""
+
+# Action dimensions
+LEFT_WRIST_POS_DIM = 3
+LEFT_WRIST_QUAT_DIM = 4
+RIGHT_WRIST_POS_DIM = 3
+RIGHT_WRIST_QUAT_DIM = 4
+LEFT_HAND_STATE_DIM = 1
+RIGHT_HAND_STATE_DIM = 1
+
+# Action indices
+LEFT_HAND_STATE_IDX = 0
+RIGHT_HAND_STATE_IDX = 1
+LEFT_WRIST_POS_START_IDX = 2
+LEFT_WRIST_POS_END_IDX = 5
+LEFT_WRIST_QUAT_START_IDX = 5
+LEFT_WRIST_QUAT_END_IDX = 9
+RIGHT_WRIST_POS_START_IDX = 9
+RIGHT_WRIST_POS_END_IDX = 12
+RIGHT_WRIST_QUAT_START_IDX = 12
+RIGHT_WRIST_QUAT_END_IDX = 16
+NAVIGATE_CMD_START_IDX = 16
+NAVIGATE_CMD_END_IDX = 19
+BASE_HEIGHT_CMD_START_IDX = 19
+BASE_HEIGHT_CMD_END_IDX = 20
+TORSO_ORIENTATION_RPY_CMD_START_IDX = 20
+TORSO_ORIENTATION_RPY_CMD_END_IDX = 23
+
+# Navigation p-controller params
+NAVIGATE_THRESHOLD = 1e-4
+
+# Robot model link names
+LEFT_WRIST_LINK_NAME = "left_wrist_yaw_link"
+RIGHT_WRIST_LINK_NAME = "right_wrist_yaw_link"

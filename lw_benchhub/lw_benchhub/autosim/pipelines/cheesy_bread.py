@@ -1,0 +1,184 @@
+from autosim.core.pipeline import AutoSimPipeline, AutoSimPipelineCfg
+from isaaclab.envs import ManagerBasedEnv
+from isaaclab.utils import configclass
+
+import torch
+
+from autosim.decomposers import LLMDecomposerCfg
+
+from ..prompt_utils import render_additional_prompt
+from ..robot_profiles import (
+    TaskRobotOverride,
+    build_env_extra_info,
+    configure_robot_runtime_settings,
+    resolve_robot_settings,
+)
+
+TASK_ROBOT_OVERRIDES: dict[str, TaskRobotOverride] = {
+    "x7s_joint_left": TaskRobotOverride(
+        extra_target_link_names=("link20_tip",),
+        object_reach_target_poses={
+            "cheese": [
+                torch.tensor([0.003, -0.049, 0.025, 0.705, -0.002, 0.05, 0.707]),
+            ],
+            "bread": [
+                torch.tensor([-0.05, -0.05, 0.13, 0.9238, 0.0, 0.0, 0.3827]),
+            ],
+        },
+    ),
+}
+
+
+def get_task_robot_override(robot_profile: str) -> TaskRobotOverride:
+    try:
+        return TASK_ROBOT_OVERRIDES[robot_profile]
+    except KeyError as exc:
+        supported = ", ".join(tuple(TASK_ROBOT_OVERRIDES))
+        raise ValueError(
+            f"CheesyBreadPipeline does not support robot profile '{robot_profile}'. Supported profiles: {supported}"
+        ) from exc
+
+
+@configclass
+class CheesyBreadPipelineCfg(AutoSimPipelineCfg):
+    """Configuration for the CheesyBreadPipeline."""
+
+    robot_profile: str = "x7s_joint_left"
+
+    decomposer: LLMDecomposerCfg = LLMDecomposerCfg()
+
+    def __post_init__(self):
+        resolved_robot = resolve_robot_settings(
+            self.robot_profile,
+            override=get_task_robot_override(self.robot_profile),
+        )
+        configure_robot_runtime_settings(self, resolved_robot)
+
+        self.skills.moveto.extra_cfg.local_planner.max_linear_velocity = 3.5
+        self.skills.moveto.extra_cfg.local_planner.max_angular_velocity = 3.0
+        self.skills.moveto.extra_cfg.local_planner.predict_time = 0.4
+        self.skills.moveto.extra_cfg.global_planner.safety_distance = 1.1
+        self.skills.moveto.extra_cfg.global_planner.proximity_weight = 3.0
+        self.skills.moveto.extra_cfg.waypoint_tolerance = 0.2
+        self.skills.moveto.extra_cfg.goal_tolerance = 0.1
+        self.skills.moveto.extra_cfg.yaw_tolerance = 0.005
+        self.skills.moveto.extra_cfg.uws_dwa = False
+
+        self.occupancy_map.floor_prim_suffix = "Scene/floor_room"
+        self.motion_planner.world_ignore_subffixes = ["Scene/floor_room"]
+        self.motion_planner.world_only_subffixes = [
+            "Scene/bread",
+            "Scene/cheese",
+            "Scene/counter_main_main_group",
+            "Scene/counter_1_front_group",
+        ]
+
+
+class CheesyBreadPipeline(AutoSimPipeline):
+    def __init__(self, cfg: AutoSimPipelineCfg):
+        super().__init__(cfg)
+        robot_profile = cfg.robot_profile
+        self._resolved_robot = resolve_robot_settings(
+            robot_profile,
+            override=get_task_robot_override(robot_profile),
+        )
+
+    def load_env(self) -> ManagerBasedEnv:
+        import gymnasium as gym
+        import lw_benchhub_tasks.lightwheel_robocasa_tasks.multi_stage.making_toast.cheesy_bread as cb
+        from lw_benchhub.utils.env import ExecuteMode, parse_env_cfg
+
+        cb.CheesyBread._get_obj_cfgs = patch_get_obj_cfgs
+
+        env_cfg = parse_env_cfg(
+            scene_backend="robocasa",
+            task_backend="robocasa",
+            task_name="CheesyBread",
+            robot_name=self._resolved_robot.profile.robot_name,
+            scene_name="robocasakitchen-9-8",
+            robot_scale=1.0,
+            device="cpu",
+            num_envs=1,
+            use_fabric=False,
+            first_person_view=False,
+            enable_cameras=False,
+            execute_mode=ExecuteMode.TRAIN,
+            usd_simplify=False,
+            seed=42,
+            sources=["objaverse", "lightwheel", "aigen_objs"],
+            object_projects=[],
+            rl_name=None,
+            headless_mode=False,
+            replay_cfgs={"add_camera_to_observation": True, "render_resolution": (640, 480)},
+            resample_robot_placement_on_reset=False,
+        )
+
+        env_cfg.terminations.time_out = None
+
+        env_cfg.scene.robot.init_state.pos[1] -= 0.8
+
+        env_id = f"Robocasa-CheesyBread-{self._resolved_robot.profile.robot_name}-v0"
+        gym.register(
+            id=env_id,
+            entry_point="isaaclab.envs:ManagerBasedRLEnv",
+            kwargs={},
+            disable_env_checker=True,
+        )
+
+        env = gym.make(env_id, cfg=env_cfg, render_mode="rgb_array").unwrapped
+
+        return env
+
+    def get_env_extra_info(self):
+        return build_env_extra_info(
+            task_name="Robocasa-Task-CheesyBread",
+            objects=self._env.scene.keys(),
+            additional_prompt_contents=(
+                f"{render_additional_prompt()}\n\n After grasp the cheess, you need to lift it up and place it on the bread."
+            ),
+            resolved_robot=self._resolved_robot,
+        )
+
+
+def patch_get_obj_cfgs(self):
+    cfgs = []
+    cfgs.append(
+        dict(
+            name="bread",
+            obj_groups="bread_flat",
+            asset_name="Bread013.usd",
+            object_scale=1.5,
+            placement=dict(
+                fixture=self.counter,
+                size=(0.5, 0.4),
+                pos=(0, -1.0),
+                rotation=(0.0, 0.0),
+                try_to_place_in="cutting_board",
+            ),
+        )
+    )
+    cfgs.append(
+        dict(
+            name="cheese",
+            obj_groups="cheese",
+            asset_name="Cheese003.usd",
+            init_robot_here=True,
+            placement=dict[str, str | tuple[float, float]](
+                ref_obj="bread_container",
+                fixture=self.counter,
+                size=(1.0, 0.08),
+                pos=(-0.8, -1.0),
+                rotation=(0.0, 0.0),
+            ),
+        )
+    )
+
+    # Distractor on the counter
+    cfgs.append(
+        dict(
+            name="distr_counter",
+            obj_groups="all",
+            placement=dict(fixture=self.counter, size=(1.0, 0.20), pos=(0, 1.0)),
+        )
+    )
+    return cfgs

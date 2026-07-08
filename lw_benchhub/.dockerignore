@@ -1,0 +1,100 @@
+# Git related files
+.git/
+.gitignore
+.gitattributes
+.gitmodules
+**/.git
+
+# Other version control files
+.svn/
+.hg/
+.bzr/
+
+# Temporary files and cache
+*.tmp
+*.temp
+*.cache
+*.log
+*.pid
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swp
+*~
+**/.vscode/
+**/.idea/
+
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Python related
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Testing related
+.coverage
+.pytest_cache/
+.tox/
+htmlcov/
+
+# Documentation
+docs/_build/
+site/
+
+# Others
+*.bak
+*.orig
+*.rej
+
+# IsaacLab specific
+# Ignore docs
+docs/
+# Copy in licenses folder to the container
+!docs/licenses/
+# Ignore logs
+**/logs/
+**/runs/
+**/output/*
+**/outputs/*
+**/videos/*
+*.tmp
+# Ignore docker
+docker/cluster/exports/
+docker/.container.cfg
+# Ignore recordings
+recordings/
+# Ignore __pycache__
+**/__pycache__/
+**/*.egg-info/
+# Ignore Isaac Sim symlink
+_isaac_sim?
+# Docker history
+docker/.isaac-lab-docker-history
+
+# lw_benchhub_logs
+lw_benchhub_logs/
+
+# third party
+#third_party/*
+#!third_party/robocasa_upload/
+#!third_party/robocasa_upload/**
+#!third_party/IsaacLab/
+#!third_party/IsaacLab/**

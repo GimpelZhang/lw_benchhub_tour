@@ -1,0 +1,30 @@
+# Stage 1 / SmolVLA environment variables.
+# Copy to headless_env.sh and fill in your real HF_TOKEN.
+#   cp headless_env.sh.example headless_env.sh && chmod 600 headless_env.sh
+# headless_env.sh is gitignored and MUST NOT be committed.
+
+# === CUDA ===
+export CUDA_HOME=/usr/local/cuda
+export PATH=$CUDA_HOME/bin:$PATH
+
+# === Isaac Sim Headless rendering ===
+export HEADLESS=1
+export ENABLE_CAMERAS=1
+export MUJOCO_GL=egl
+export OMNI_KIT_ALLOW_ROOT=1
+export ACCEPT_EULA=Y
+export OMNI_KIT_ACCEPT_EULA=Y
+export PRIVACY_CONSENT=Y
+
+# === Stage1_Patch: disable PyTorch compile (required for pi0.5 closed-loop inference) ===
+export TORCH_COMPILE_DISABLE=1
+export TORCHINDUCTOR_DISABLE=1
+
+# === HuggingFace cache redirect to /mnt/robot ===
+export HF_HOME=/mnt/robot/.cache/huggingface
+
+# === HuggingFace token (fill in your own from https://huggingface.co/settings/tokens) ===
+export HF_TOKEN=<your-hf-token-here>
+
+# === NOTE: do NOT set CUDA_VISIBLE_DEVICES here ===
+# Isaac Sim uses its own GPU enumeration; CUDA_VISIBLE_DEVICES causes camera render Segfault.

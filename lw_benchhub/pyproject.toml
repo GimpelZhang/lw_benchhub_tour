@@ -1,0 +1,43 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lw_benchhub"
+version = "0.1.0"
+description = "Isaac Lab based Benchmark for Robotics"
+dependencies = [
+    "lightwheel-sdk>=1.0.0",
+    "pin-pink==3.1.0",
+    "qpsolvers==4.8.1",
+    "grpcio>1.73",
+    "protobuf>6",
+    "pynput",
+    "mediapy",
+    "tqdm",
+    "pandas",
+    "vuer[all]",
+    "onnxruntime",
+    "zmq",
+    "lazy-import",
+    "flask",
+    "tyro",
+]
+
+[project.optional-dependencies]
+
+lerobot = [
+    "lerobot==0.3.3",
+    "pyserial>=3.5",
+    "deepdiff>=7.0.1,<9.0.0",
+    "feetech-servo-sdk>=1.0.0"
+]
+
+[project.entry-points.lw_benchhub_modules]
+lw_benchhub_scences = "lw_benchhub.core.scenes"
+lw_benchhub_robots = "lw_benchhub.core.robots"
+lw_benchhub_tasks = "lw_benchhub_tasks"
+lw_benchhub_rl = "lw_benchhub_rl"

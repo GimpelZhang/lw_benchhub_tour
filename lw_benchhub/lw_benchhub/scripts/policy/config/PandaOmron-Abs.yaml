@@ -1,0 +1,63 @@
+robot_type: PandaOmron-Abs
+default_task: BreadAndCheese
+features:
+  observation.images.agentview_main:
+    dtype: video
+    shape: [224, 672, 3]
+    names: ["height", "width", "channel"]
+    video_info:
+      video.fps: 25.0
+      video.codec: h264
+      video.pix_fmt: yuv420p
+      video.is_depth_map: false
+      has_audio: false
+  observation.state:
+    dtype: float32
+    shape: (13,)
+    names:
+      - mobilebase_forward
+      - mobilebase_side
+      - mobilebase_yaw
+      - mobilebase_torso_height
+      - panda_joint1
+      - panda_joint2
+      - panda_joint3
+      - panda_joint4
+      - panda_joint5
+      - panda_joint6
+      - panda_joint7
+      - panda_finger_joint1
+      - panda_finger_joint2
+  action:
+    dtype: float32
+    shape: (13,)
+    names:
+      - mobilebase_forward
+      - mobilebase_side
+      - mobilebase_yaw
+      - mobilebase_torso_height
+      - panda_joint1
+      - panda_joint2
+      - panda_joint3
+      - panda_joint4
+      - panda_joint5
+      - panda_joint6
+      - panda_joint7
+      - panda_finger_joint1
+      - panda_finger_joint2
+  episode_index:
+    dtype: int64
+    shape: [1]
+    names: null
+  frame_index:
+    dtype: int64
+    shape: [1]
+    names: null
+  index:
+    dtype: int64
+    shape: [1]
+    names: null
+  task_index:
+    dtype: int64
+    shape: [1]
+    names: null

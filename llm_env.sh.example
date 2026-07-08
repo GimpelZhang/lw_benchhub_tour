@@ -1,0 +1,12 @@
+# Stage 2 v6 LLM environment - DeepSeek.
+# Copy to llm_env.sh and fill in your real key.
+#   cp llm_env.sh.example llm_env.sh && chmod 600 llm_env.sh
+# llm_env.sh is gitignored and MUST NOT be committed.
+# Source this AFTER conda activate <env>.
+
+export OPENAI_API_KEY=<your-deepseek-api-key>
+export OPENAI_BASE_URL=https://api.deepseek.com
+
+# DeepSeek currently exposes 'deepseek-chat' as the supported chat model.
+# Override at call time if a newer model is available.
+export LLM_MODEL=deepseek-chat

@@ -1,0 +1,14 @@
+{
+  "hard_scene": {
+    "exit_code": 0,
+    "success_rate_pct": 40.0
+  },
+  "easy_curriculum": {
+    "exit_code": 0,
+    "success_rate_pct": 40.0
+  },
+  "medium_curriculum": {
+    "exit_code": 0,
+    "success_rate_pct": 0.0
+  }
+}

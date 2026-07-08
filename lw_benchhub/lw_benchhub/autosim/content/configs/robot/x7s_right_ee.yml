@@ -1,0 +1,125 @@
+robot_cfg:
+  
+  kinematics:
+    use_usd_kinematics: False
+    usd_robot_root: "/x7s"
+    urdf_path: "robot/x7s/urdf/X7S.urdf"
+    asset_root_path: "robot/x7s"
+    
+    base_link: "world_link"
+    ee_link: "link20_tip" 
+    
+    link_names: ["link11_tip", "link20_tip"]
+
+    collision_link_names: 
+      [
+        "base_link",
+        "link1", "body_link", "link3", "link4", 
+        "link5", "link6", "link7", "link8", "link9", "link10", "left_hand_link",
+        "link12", "link13",
+        "link14", "link15", "link16", "link17", "link18", "link19", "right_hand_link",
+        "link21", "link22"
+      ]
+    
+    collision_spheres: "spheres/collision_x7s.yml"
+    collision_sphere_buffer: 0.002
+    extra_collision_spheres: {"link11_tip": 100, "link20_tip": 100}
+    use_global_cumul: True
+
+    self_collision_ignore:
+      {
+        "base_link": ["link1"],
+        "link1": ["body_link"],
+        "link2": ["link3", "link5", "link14"],
+        "link3": ["link4"],
+        "link4": [],
+        "link5": ["link6"],
+        "link6": ["link7"],
+        "link7": ["link8"],
+        "link8": ["link9"],
+        "link9": ["link10"],
+        "link10": ["left_hand_link"],
+        "link11": ["link12", "link13"],
+        "link12": ["link13"],
+        "link14": ["link15"],
+        "link15": ["link16"],
+        "link16": ["link17"],
+        "link17": ["link18"],
+        "link18": ["link19"],
+        "link19": ["right_hand_link"],
+        "link20": ["link21", "link22"],
+        "link21": ["link22"]
+      }
+
+    self_collision_buffer: {}
+
+    mesh_link_names: [
+        "base_link",
+        "link1", "body_link", "link3", "link4", 
+        "link5", "link6", "link7", "link8", "link9", "link10", "left_hand_link",
+        "link12", "link13",
+        "link14", "link15", "link16", "link17", "link18", "link19", "right_hand_link",
+        "link21", "link22"
+      ]
+
+    lock_joints: {
+        "left_gripper2": 0.044,
+        "left_gripper1": 0.044,
+        "right_gripper1": 0.044,
+        "right_gripper2": 0.044
+    }
+
+    extra_links: null
+
+    cspace:
+      joint_names: [
+        "base_x_joint", 
+        "base_y_joint", 
+        "base_yaw_link", 
+        "body_z_joint",     # joint1
+        "body_y_joint",     # joint2
+        "right_shoulder_y", # joint14
+        "head_z_joint",     # joint3
+        "left_shoulder_y",  # joint5
+        "right_shoulder_x", # joint15
+        "head_y_joint",     # joint4
+        "left_shoulder_x",  # joint6
+        "right_shoulder_z", # joint16
+        "left_shoulder_z",  # joint7
+        "right_elbow_y",    # joint17
+        "left_elbow_y",     # joint8
+        "right_elbow_x",    # joint18
+        "left_elbow_x",     # joint9
+        "right_wrist_y",    # joint19
+        "left_wrist_y",     # joint10
+        "right_wrist_z",    # joint20
+        "left_wrist_z",     # joint11
+        "right_gripper1",   # joint21
+        "right_gripper2",   # joint22
+        "left_gripper1",    # joint13
+        "left_gripper2"     # joint12
+      ]
+
+      retract_config: [
+        0.0, 0.0, 0.0,
+        0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+      ]
+
+      null_space_weight: [
+        1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0
+      ]
+
+      cspace_distance_weight: [
+        1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0
+      ]
+
+      max_jerk: 1000.0
+      max_acceleration: 1000.0
+
+planner:
+  frame_bias: [0.0, 0.0, -0.0]

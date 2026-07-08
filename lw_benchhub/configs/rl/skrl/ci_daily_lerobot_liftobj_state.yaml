@@ -1,0 +1,3 @@
+_base_:
+  - lerobot_liftobj_state
+max_iterations: 1601

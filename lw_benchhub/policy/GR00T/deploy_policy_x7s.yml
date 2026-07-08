@@ -1,0 +1,56 @@
+# Basic experiment configuration (keep unchanged)
+policy_name: 'GR00TPolicy'
+checkpoint: '/path/to/your/checkpoint' # 'nvidia/GR00T-N1.5-3B' # To be provided by the user
+seed: 0
+
+# Add Parameters You Need
+embodiment_tag: 'new_embodiment'
+action_horizon: 16
+denoising_steps: 4
+num_feedback_actions: 16
+data_config: 'x7s'
+
+instruction: 'Lift the cube'
+
+observation_config:
+  custom_mapping:
+    video.left_hand_camera: left_hand_camera
+    # video.first_person_camera: first_person_camera
+    video.first_person_camera: first_person_camera
+    # video.left_shoulder_camera: left_shoulder_camera
+    state.x: {eef_base:[0]}
+    state.y: {eef_base:[1]}
+    state.z: {eef_base:[2]}
+    state.qw: {eef_base:[3]}
+    state.qx: {eef_base:[4]}
+    state.qy: {eef_base:[5]}
+    state.qz: {eef_base:[6]}
+    state.gripper: {joint_pos:[-1]}
+
+record_camera: ["first_person_camera"]
+time_out_limit: 20
+
+height: 480
+width: 480
+
+env_cfg:
+  task: LiftObj
+  robot: X7S-Deploy
+  layout: robocasakitchen-9-8
+  scene_backend: robocasa
+  task_backend: robocasa
+  device: cuda:0
+  num_envs: 1
+  usd_simplify: false
+  enable_cameras: true
+  video: false
+  disable_fabric: false
+  robot_scale: 1.0
+  seed: 42
+  sources: null
+  object_projects: null
+  for_rl: false
+  variant: Visual 
+
+  concatenate_terms: false
+  distributed: false

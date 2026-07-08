@@ -1,0 +1,92 @@
+{
+  "scene_yml": "/mnt/robot/stage4_flywheel/configs/easy_curriculum.yml",
+  "threshold": 0.5,
+  "passed": true,
+  "n_objects": 2,
+  "n_reachable_either_arm": 2,
+  "reach_ratio": 1.0,
+  "per_object": [
+    {
+      "name": "akita_black_bowl",
+      "world_pos": [
+        2.291419744491577,
+        -2.093623161315918,
+        0.8101065158843994
+      ],
+      "arm_base_left_world": [
+        2.580000019202254,
+        -1.839880590998551,
+        0.75
+      ],
+      "arm_base_right_world": [
+        2.28000011431215,
+        -1.8401194757586512,
+        0.75
+      ],
+      "local_left": [
+        0.25351269844028906,
+        -0.288782233998002,
+        0.060106515884399414
+      ],
+      "local_right": [
+        0.25351269844028895,
+        0.011217766001997989,
+        0.060106515884399414
+      ],
+      "left_err": 0.005731990095227957,
+      "right_err": 0.0009119047317653894,
+      "either_arm_reach": true
+    },
+    {
+      "name": "plate",
+      "world_pos": [
+        2.5608861446380615,
+        -2.1584999561309814,
+        0.7893660068511963
+      ],
+      "arm_base_left_world": [
+        2.580000019202254,
+        -1.839880590998551,
+        0.75
+      ],
+      "arm_base_right_world": [
+        2.28000011431215,
+        -1.8401194757586512,
+        0.75
+      ],
+      "local_left": [
+        0.3186040440751153,
+        -0.01936757953980685,
+        0.03936600685119629
+      ],
+      "local_right": [
+        0.31860404407511517,
+        0.2806324204601931,
+        0.03936600685119629
+      ],
+      "left_err": 0.004744688514620066,
+      "right_err": 0.0067772227339446545,
+      "either_arm_reach": true
+    }
+  ],
+  "robot_pose": {
+    "name": "robot",
+    "world_pos": [
+      2.430000066757202,
+      -1.840000033378601,
+      0.75
+    ],
+    "world_quat_wxyz": [
+      0.7073882222175598,
+      0.0,
+      0.0,
+      -0.7068251967430115
+    ],
+    "yaw_rad": -1.5700000441770803
+  },
+  "check_kind": "v5-live-isaaclab+curobo-ik",
+  "layout": "libero-1-1",
+  "task": "L90K1PutTheBlackBowlOnThePlate",
+  "robot": "DoublePiper-Abs",
+  "seed": 48
+}

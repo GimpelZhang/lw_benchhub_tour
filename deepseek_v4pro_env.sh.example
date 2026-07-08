@@ -1,0 +1,13 @@
+#!/bin/bash
+# DeepSeek-v4-pro environment variables for Stage 4 Data Flywheel.
+# Copy to deepseek_v4pro_env.sh and fill in your real key.
+#   cp deepseek_v4pro_env.sh.example deepseek_v4pro_env.sh && chmod 600 deepseek_v4pro_env.sh
+# deepseek_v4pro_env.sh is gitignored and MUST NOT be committed.
+# Source this AFTER `conda activate lerobot-arena` and BEFORE running any
+# Phase-3 curriculum-generation script.
+#
+# IMPORTANT: This is the NEW v4-pro env script. Do NOT overwrite the old
+# /mnt/robot/llm_env.sh (Stage 2 v6 still depends on its deepseek-chat config).
+export DEEPSEEK_API_KEY=<your-deepseek-v4-pro-api-key>
+export DEEPSEEK_BASE_URL=https://api.deepseek.com/anthropic
+export DEEPSEEK_MODEL=deepseek-v4-pro
