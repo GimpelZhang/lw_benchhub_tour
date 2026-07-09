@@ -187,13 +187,13 @@ tail -F /mnt/robot/pathB_logs/run_pathB.log | \
 ├── llm_env.sh                        ← DeepSeek API key
 ├── pathB_logs/                       ← Stage 1 路径 B 日志与启动脚本
 ├── eval_outputs_pathB_1/             ← Stage 1 baseline 输出
-├── pathB_logs_v6/                    ← Stage 2 v6 日志、final_manifest.json、smoketest
-├── eval_outputs_stage2_v6_scene{1,2}/← Stage 2 v6 视频
-├── stage2_v6_final_deliverables/     ← v6 summary.md + snapshot PNG
-├── lw_benchhub/configs/envhub/generated_v6/  ← v6 LLM 生成的场景 yml
-├── generate_scenes_with_live_reach_v6.py  ← v6 LLM 生成 + reach gate
-├── validate_scene_objects_reach_v5.py     ← v6 实际调用的 IK validator（脚本名 v5，逻辑被 v6 用）
-├── verify_stage2_v6.py
+├── stage2_logs/                     ← Stage 2 v6 日志、final_manifest.json、smoketest
+├── eval_outputs_stage2_scene{1,2}/  ← Stage 2 v6 视频
+├── stage2_final_deliverables/       ← v6 summary.md + snapshot PNG
+├── lw_benchhub/configs/envhub/generated/  ← v6 LLM 生成的场景 yml
+├── generate_scenes_with_live_reach.py  ← v6 LLM 生成 + reach gate
+├── validate_scene_objects_reach.py     ← v6 实际调用的 IK validator
+├── verify_stage2.py
 ├── v5_install_logs/, v6_install_logs/  ← 安装日志
 ├── AutoDataGen/                      ← cuRobo 仓库（submodule 已 init）
 ├── IsaacLab/                         ← Isaac Lab v2.3.2 源码
@@ -295,20 +295,20 @@ Stage 2 经过 v1-v5 多轮迭代（cuRobo 跳过 → workspace IK → AST liter
 ├── lw_benchhub/__init__.py                      ← namespace shim（§3.4）
 ├── AutoDataGen/dependencies/curobo/src/curobo/__init__.py  ← PRETEND_VERSION 优先（§3.5）
 ├── piper_curobo.yml                             ← Piper 单臂 kinematics 配置（6-DoF）
-├── generate_scenes_with_live_reach_v6.py        ← LLM 生成 + live reach gate（MAX_ROUNDS=5）
-├── validate_scene_objects_reach_v5.py           ← v6 实际复用的 IK validator
-├── verify_stage2_v6.py                          ← v6 deliverable 校验
-├── pathB_logs_v6/
+├── generate_scenes_with_live_reach.py        ← LLM 生成 + live reach gate（MAX_ROUNDS=5）
+├── validate_scene_objects_reach.py           ← v6 实际复用的 IK validator
+├── verify_stage2.py                          ← v6 deliverable 校验
+├── stage2_logs/
 │   ├── final_manifest.json                      ← 2 accepted scene + banned 列表 + 真实 init pose
 │   ├── generate_scenes.log
 │   ├── scene_reach_reports/scene_{1,2}_reach.json  ← per-object world_pos + IK err
-│   ├── smoketest_v6.json                        ← v6 link 端到端证据（chefmate_8_frypan reach）
-│   ├── run_stage2_v6_scene.sh / run_stage2_v6_all.sh
-│   └── run_stage2_v6_scene{1,2}.log
-├── lw_benchhub/configs/envhub/generated_v6/scene_variation_{1,2}.yml
-├── eval_outputs_stage2_v6_scene{1,2}/           ← 各 2 mp4（video_length=1100, 22s 完整 episode）
-└── stage2_v6_final_deliverables/
-    ├── stage2_v6_summary.md
+│   ├── smoketest.json                        ← v6 link 端到端证据（chefmate_8_frypan reach）
+│   ├── run_stage2_scene.sh / run_stage2_all.sh
+│   └── run_stage2_scene{1,2}.log
+├── lw_benchhub/configs/envhub/generated/scene_variation_{1,2}.yml
+├── eval_outputs_stage2_scene{1,2}/           ← 各 2 mp4（video_length=1100, 22s 完整 episode）
+└── stage2_final_deliverables/
+    ├── stage2_summary.md
     └── scene_{1,2}_render_snapshot.png
 ```
 
@@ -367,13 +367,13 @@ Banned 列表（v6 reach gate 实际拒绝过的 (layout, task)）：
 ### 10.4 v6 live-IK 工作流（实现细节）
 
 ```
-generate_scenes_with_live_reach_v6.py (lerobot-arena env)
+generate_scenes_with_live_reach.py (lerobot-arena env)
     │
     ├─ DeepSeek 出 3 个 (overrides) JSON，CSV+whitelist 双重 schema 校验
     │
-    └─ 每个 yml → 直接 import validate_scene_objects_reach_v5._main(...)
+    └─ 每个 yml → 直接 import validate_scene_objects_reach._main(...)
                                                     │
-        validate_scene_objects_reach_v5 (同进程 lerobot-arena env)
+        validate_scene_objects_reach (同进程 lerobot-arena env)
             ├─ export_env_for_envhub(...) → AppLauncher 启 Isaac Sim 5.1，加载 USD floorplan，env.reset()
             ├─ 读 env.scene.<rigid_object>.data.root_pos_w[0] —— 真实世界位姿
             ├─ 读 robot 的 root_state_w[0]（pos + quat → yaw）
@@ -396,17 +396,17 @@ source /mnt/robot/llm_env.sh
 unset CUDA_VISIBLE_DEVICES
 
 # 1) LLM gen + live reach gate（一个 env，全程在 lerobot-arena）
-python /mnt/robot/generate_scenes_with_live_reach_v6.py
+python /mnt/robot/generate_scenes_with_live_reach.py
 
 # 2) SmolVLA 闭环评测（同 env）
-N_EPISODES=3 bash /mnt/robot/pathB_logs_v6/run_stage2_v6_all.sh
+N_EPISODES=3 bash /mnt/robot/stage2_logs/run_stage2_all.sh
 
 # 3) verify + 交付物
-python /mnt/robot/verify_stage2_v6.py
-cat /mnt/robot/stage2_v6_final_deliverables/stage2_v6_summary.md
+python /mnt/robot/verify_stage2.py
+cat /mnt/robot/stage2_final_deliverables/stage2_summary.md
 ```
 
-> v6 runners (`run_stage2_v6_*.sh`) 用 `set +u`（不是 `set -u`），因为 conda 25 的 `~cuda-nvcc_activate.sh` 引用了未绑定的 `NVCC_PREPEND_FLAGS`，`set -u` 下会立刻 abort。
+> v6 runners (`run_stage2_*.sh`) 用 `set +u`（不是 `set -u`），因为 conda 25 的 `~cuda-nvcc_activate.sh` 引用了未绑定的 `NVCC_PREPEND_FLAGS`，`set -u` 下会立刻 abort。
 
 ### 10.6 v6 已知遗留 / 可改进点（诚实声明）
 

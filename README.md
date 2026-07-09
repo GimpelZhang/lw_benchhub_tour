@@ -85,19 +85,19 @@ Expected: ~40% success on `L90K1PutTheBlackBowlOnThePlate`. Full guide:
 ```bash
 source /mnt/robot/lerobot_arena_curobo_env.sh
 source /mnt/robot/llm_env.sh
-python /mnt/robot/generate_scenes_with_live_reach_v6.py   # LLM gen + live IK gate
-N_EPISODES=3 bash /mnt/robot/pathB_logs_v6/run_stage2_v6_all.sh
-python /mnt/robot/verify_stage2_v6.py
+python /mnt/robot/generate_scenes_with_live_reach.py   # LLM gen + live IK gate
+N_EPISODES=3 bash /mnt/robot/stage2_logs/run_stage2_all.sh
+python /mnt/robot/verify_stage2.py
 ```
 Full guide: `docs/Complete_Stage_2.md`.
 
 ### Stage 4 (demo-data flywheel)
 
 ```bash
-N_EPISODES=30 bash /mnt/robot/stage4_flywheel/scripts/run_policy_demo_collection_v2.sh
+N_EPISODES=30 bash /mnt/robot/stage4_flywheel/scripts/run_policy_demo_collection.sh
 python /mnt/robot/stage4_flywheel/scripts/evaluate_phase1_gates.py
 python /mnt/robot/stage4_flywheel/scripts/build_policy_demos_dataset.py
-bash /mnt/robot/stage4_flywheel/scripts/verify_stage4_v2.sh
+bash /mnt/robot/stage4_flywheel/scripts/verify_stage4.sh
 ```
 Delivers a 10-episode / 6527-frame fine-tuneable LeRobotDataset. Full guide
 (5 documented pitfalls): `docs/Complete_Stage_4.md` §12.

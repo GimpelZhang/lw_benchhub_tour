@@ -7,7 +7,7 @@ source /mnt/robot/lerobot_arena_curobo_env.sh
 unset CUDA_VISIBLE_DEVICES
 for lvl in easy medium; do
   echo "===== reach gate ${lvl} ====="
-  python /mnt/robot/validate_scene_objects_reach_v5.py \
+  python /mnt/robot/validate_scene_objects_reach.py \
     /mnt/robot/stage4_flywheel/configs/${lvl}_curriculum.yml \
     --threshold 0.50 \
     --report-json /mnt/robot/stage4_flywheel/metrics/curriculum/reach_report_${lvl}.json

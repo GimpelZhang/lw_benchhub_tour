@@ -61,10 +61,10 @@ echo "=== 7. Protected paths unchanged ==="
 # moved to docs/. Update the protected-path locations accordingly. The
 # eval_outputs_* dirs are gitignored runtime outputs (regenerated on rerun) and
 # may have been cleaned between runs; treat their absence as non-fatal (warn).
-for p in /mnt/robot/docs/Complete_Stage_1.md /mnt/robot/docs/Stage4_Plan.md /mnt/robot/llm_env.sh /mnt/robot/stage2_v6_final_deliverables /mnt/robot/lw_benchhub/configs/envhub/generated_v6; do
+for p in /mnt/robot/docs/Complete_Stage_1.md /mnt/robot/docs/Stage4_Plan.md /mnt/robot/llm_env.sh /mnt/robot/stage2_final_deliverables /mnt/robot/lw_benchhub/configs/envhub/generated; do
   [ -e "$p" ] && ok "protected path intact: $(basename $p)" || no "protected path missing: $p"
 done
-for p in /mnt/robot/eval_outputs_pathB_1 /mnt/robot/eval_outputs_stage2_v6_scene1; do
+for p in /mnt/robot/eval_outputs_pathB_1 /mnt/robot/eval_outputs_stage2_scene1; do
   [ -e "$p" ] && ok "upstream output intact: $(basename $p)" || echo "  WARN: upstream output not on disk (regenerable): $(basename $p)"
 done
 

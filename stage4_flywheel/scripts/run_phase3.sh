@@ -11,7 +11,7 @@ python -c "import numpy; assert numpy.__version__=='1.26.0', numpy.__version__"
 mkdir -p /mnt/robot/stage4_flywheel/metrics/curriculum
 
 echo "===== 3.1 reach gate on hard_scene.yml ====="
-python /mnt/robot/validate_scene_objects_reach_v5.py \
+python /mnt/robot/validate_scene_objects_reach.py \
   /mnt/robot/stage4_flywheel/configs/hard_scene.yml \
   --threshold 0.50 \
   --report-json /mnt/robot/stage4_flywheel/metrics/baseline/reach_report.json
@@ -28,7 +28,7 @@ echo "CURRICULUM_GEN_EXIT=$?"
 echo "===== 3.4 reach-gate validate easy + medium ====="
 for lvl in easy medium; do
   echo "--- reach gate ${lvl} ---"
-  python /mnt/robot/validate_scene_objects_reach_v5.py \
+  python /mnt/robot/validate_scene_objects_reach.py \
     /mnt/robot/stage4_flywheel/configs/${lvl}_curriculum.yml \
     --threshold 0.50 \
     --report-json /mnt/robot/stage4_flywheel/metrics/curriculum/reach_report_${lvl}.json

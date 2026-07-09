@@ -1,5 +1,5 @@
 {
-  "scene_yml": "/mnt/robot/lw_benchhub/configs/envhub/generated_v6/scene_variation_3.yml",
+  "scene_yml": "/mnt/robot/lw_benchhub/configs/envhub/generated/scene_variation_3.yml",
   "threshold": 0.5,
   "passed": false,
   "n_objects": 0,

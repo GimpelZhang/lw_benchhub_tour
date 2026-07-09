@@ -6,9 +6,9 @@ isaaclab env per candidate scene (no more CSV-only math). This is the
 final "what v3 wanted" stage from CLAUDE.md §14.7.
 
 Output:
-  /mnt/robot/lw_benchhub/configs/envhub/generated_v6/scene_variation_{1,2,3}.yml
-  /mnt/robot/pathB_logs_v6/scene_reach_reports/scene_{1,2,3}_reach.json
-  /mnt/robot/pathB_logs_v6/final_manifest.json
+  /mnt/robot/lw_benchhub/configs/envhub/generated/scene_variation_{1,2,3}.yml
+  /mnt/robot/stage2_logs/scene_reach_reports/scene_{1,2,3}_reach.json
+  /mnt/robot/stage2_logs/final_manifest.json
 """
 import csv
 import json
@@ -24,10 +24,10 @@ REPO_ROOT = Path("/mnt/robot")
 LWB_ROOT = REPO_ROOT / "lw_benchhub"
 TEMPLATE = LWB_ROOT / "configs/envhub/example.yml"
 MAPPING_CSV = LWB_ROOT / "configs/layout_task_mapping/layout_task_mapping.csv"
-OUTPUT_DIR = LWB_ROOT / "configs/envhub/generated_v6"
-LOG_ROOT = REPO_ROOT / "pathB_logs_v6"
+OUTPUT_DIR = LWB_ROOT / "configs/envhub/generated"
+LOG_ROOT = REPO_ROOT / "stage2_logs"
 REACH_REPORT_DIR = LOG_ROOT / "scene_reach_reports"
-VALIDATOR = REPO_ROOT / "validate_scene_objects_reach_v5.py"
+VALIDATOR = REPO_ROOT / "validate_scene_objects_reach.py"
 # v5 difference: validator runs in SAME env as lerobot-eval (lerobot-arena)
 LEROBOT_PY = Path("/mnt/robot/conda/envs/lerobot-arena/bin/python")
 LEROBOT_ENV_SH = Path("/mnt/robot/lerobot_arena_curobo_env.sh")

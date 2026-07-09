@@ -2,7 +2,7 @@
 
 Takes a live Isaac Lab environment (already booted by the pipeline) and selects
 whether the left or right arm should manipulate each target object. The math is
-adapted from ``validate_scene_objects_reach_v5.py``.
+adapted from ``validate_scene_objects_reach.py``.
 """
 
 from __future__ import annotations

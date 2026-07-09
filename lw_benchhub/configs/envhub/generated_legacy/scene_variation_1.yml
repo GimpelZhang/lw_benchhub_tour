@@ -5,10 +5,10 @@ sensitivity: 1.0
 step_hz: 50
 enable_cameras: true
 execute_mode: eval
-episode_length_s: 25.0
+episode_length_s: 30.0
 robot: DoublePiper-Abs
 robot_scale: 1.0
-task: L10K3TurnOnTheStoveAndPutTheMokaPotOnIt
+task: L10K8PutBothMokaPotsOnTheStove
 scene_backend: robocasa
 task_backend: robocasa
 debug_assets: null

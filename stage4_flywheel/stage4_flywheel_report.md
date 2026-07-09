@@ -2,7 +2,7 @@
 
 > **Status**: IN PROGRESS (autopilot execution of `Stage4_Plan_Detailed.md` + `Stage4_T3_PipelineDev_Plan.md`).
 > **Started**: 2026-07-04. **VLA**: `LightwheelAI/smolvla-double-piper-pnp` (Stage 1 PathB). **Robot**: DoublePiper-Abs (16-D obs / 12-D action). **Task**: `L90K1PutTheBlackBowlOnThePlate`.
-> This report mirrors the honesty of `stage2_v6_summary.md` / `stage3_report.md`.
+> This report mirrors the honesty of `stage2_summary.md` / `stage3_report.md`.
 
 ---
 

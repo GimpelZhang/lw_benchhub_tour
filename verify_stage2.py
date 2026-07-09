@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Stage 2 v6 deliverable verifier. Reads pathB_logs_v6 reach reports +
-eval_outputs_stage2_v6_scene{1..N} videos, writes a summary that highlights:
+"""Stage 2 v6 deliverable verifier. Reads stage2_logs reach reports +
+eval_outputs_stage2_scene{1..N} videos, writes a summary that highlights:
   - The REAL robot init_pos / init_ori per scene (from CSV via reach gate)
   - Per-object world coordinates (where the gate placed them)
   - Per-arm IK errors
@@ -16,10 +16,10 @@ from pathlib import Path
 import yaml
 
 REPO_ROOT = Path("/mnt/robot")
-GENERATED_DIR = REPO_ROOT / "lw_benchhub/configs/envhub/generated_v6"
-DELIVERABLES = REPO_ROOT / "stage2_v6_final_deliverables"
-EVAL_ROOT_FMT = "eval_outputs_stage2_v6_scene{}"
-LOG_ROOT = REPO_ROOT / "pathB_logs_v6"
+GENERATED_DIR = REPO_ROOT / "lw_benchhub/configs/envhub/generated"
+DELIVERABLES = REPO_ROOT / "stage2_final_deliverables"
+EVAL_ROOT_FMT = "eval_outputs_stage2_scene{}"
+LOG_ROOT = REPO_ROOT / "stage2_logs"
 REACH_REPORT_DIR = LOG_ROOT / "scene_reach_reports"
 MANIFEST = LOG_ROOT / "final_manifest.json"
 
@@ -131,7 +131,7 @@ def main() -> int:
                            + fmt_per_obj(reach))
             continue
         any_video = True
-        log = LOG_ROOT / f"run_stage2_v6_scene{idx}.log"
+        log = LOG_ROOT / f"run_stage2_scene{idx}.log"
         info = parse_log_metrics(log)
         n_eps = info.get("n_episodes", "?")
         n_succ = info.get("n_successes", "?")
@@ -169,7 +169,7 @@ def main() -> int:
     lines.append("")
     lines.append("---")
     lines.extend(details)
-    out = DELIVERABLES / "stage2_v6_summary.md"
+    out = DELIVERABLES / "stage2_summary.md"
     out.write_text("\n".join(lines) + "\n")
     print("\nSummary written to:", out)
     if not any_video:

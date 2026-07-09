@@ -15,7 +15,7 @@ Pre-requisites (one-time per machine, handled in CLAUDE.md §16 setup):
   - source /mnt/robot/lerobot_arena_curobo_env.sh AFTER conda activate lerobot-arena
 
 USAGE
-  python validate_scene_objects_reach_v5.py <scene_yml> \
+  python validate_scene_objects_reach.py <scene_yml> \
       [--threshold R] [--num-seeds N] [--report-json PATH]
 
 Exit 0 = passed (or no rigid objects to check); 1 = failed reach gate;

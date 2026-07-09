@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Boot Isaac Sim once for one seed yml, read akita_black_bowl + robot world pose, write JSON.
-Mirrors validate_scene_objects_reach_v5._boot_env import order (no monkey_patch; AppLauncher-first)."""
+Mirrors validate_scene_objects_reach._boot_env import order (no monkey_patch; AppLauncher-first)."""
 from __future__ import annotations
 import argparse, json, os, sys, time
 from pathlib import Path
