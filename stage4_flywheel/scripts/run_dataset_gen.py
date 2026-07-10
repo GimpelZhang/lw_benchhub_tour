@@ -35,6 +35,7 @@ simulation_app = app_launcher.app
 import sys
 import h5py
 import numpy as np
+import traceback
 
 sys.path.insert(0, "/mnt/robot/AutoDataGen/source/autosim")
 sys.path.insert(0, "/mnt/robot/AutoDataGen/source/autosim_examples")
@@ -104,6 +105,7 @@ def main():
     except Exception as e:
         err = repr(e)
         print(f"[run_dataset_gen] pipeline.run() raised: {err}")
+        traceback.print_exc()
 
     rec = pipeline.get_episode_record()
     n_frames = len(rec["states"])

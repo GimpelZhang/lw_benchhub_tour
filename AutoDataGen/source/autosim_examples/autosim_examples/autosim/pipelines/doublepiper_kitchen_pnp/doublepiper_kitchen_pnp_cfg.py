@@ -33,6 +33,13 @@ class DoublePiperKitchenPnpPipelineCfg(AutoSimPipelineCfg):
         self.motion_planner.world_only_subffixes = []
         self.motion_planner.env_scene_prefix = None
 
+        # Phase 2 (Stage4_Patch_01 §4.3.3): raise collision_activation_distance (default 0.05 -> 0.07)
+        # to INCREASE the cuRobo safety margin. Per §4.3.1 correction, the original plan's 0.02-0.04
+        # was the WRONG direction (default is 0.05, so <0.05 tightens the margin -> more bowl pushing).
+        # >=0.06 increases the margin. Combined with the gripper collision_spheres in
+        # piper_curobo_{left,right}.yml (§4.3.2), this gives cuRobo a real gripper collision model.
+        self.motion_planner.collision_activation_distance = 0.07
+
         # More MotionGen seeds (default 12) for the reach(plate) trajectory — plate is at the
         # workspace edge; extra seeds help the trajectory optimizer find a valid path (non-deterministic
         # at lower seed counts).

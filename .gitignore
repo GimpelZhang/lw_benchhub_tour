@@ -32,6 +32,9 @@ docs/
 *.log
 *.pid
 *.stdout
+# Local safety backups created by Stage4 Phase 2 patches (restore points, not source)
+*.bak_patch01
+*.bak_patch01_descend
 pathB_headcam_logs/
 autosim_install_logs/
 v5_install_logs/
