@@ -46,6 +46,16 @@ class DoublePiperKitchenPnpPipelineCfg(AutoSimPipelineCfg):
         self.motion_planner.num_trajopt_seeds = 96
         self.motion_planner.num_graph_seeds = 96
 
+        # Patch-02: rotation_threshold is now exposed on CuroboPlannerCfg (was hardcoded pi). Default
+        # pi = position-only planning (rotation ignored for success), which is the ONLY mode that
+        # plans successfully at the bowl's hover pose (the bowl sits at the workspace edge, behind
+        # the robot base; reaching above it with a constrained orientation fails planning - tested
+        # identity, bowl-inverse, 0.1 & 0.5 thresholds, all fail at reach_hover). Position-only
+        # plans but leaves the gripper's default orientation (fingers ~0.30m past the bowl) so the
+        # grasp closes on empty air -> TASK_SUCCESS=False. Kept at default (pi) so the pipeline runs
+        # end-to-end. A true fix needs a reachable top-down grasp pose, which seed 48's bowl
+        # placement does not afford for the right arm. See docs/Stage4_Patch_02_report.md.
+
         self.occupancy_map.floor_prim_suffix = "floor"
 
         self.skills.lift.extra_cfg.move_axis = "-z"  # EE z points down (like Franka); -z lifts UP (reachable)

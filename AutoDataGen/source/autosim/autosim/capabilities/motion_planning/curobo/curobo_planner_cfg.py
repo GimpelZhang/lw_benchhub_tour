@@ -34,6 +34,11 @@ class CuroboPlannerCfg:
     """Number of seeds for trajectory optimization."""
     num_graph_seeds: int = 12
     """Number of seeds for graph search."""
+    rotation_threshold: float = 3.141592653589793
+    """Rotation error threshold (rad) for a pose to count as 'reached'. Default pi = position-only
+    planning (rotation ignored). Set to a small value (e.g. 0.1) to make cuRobo honor the target
+    orientation - needed when the gripper's finger offset from the wrist must point a specific way
+    (e.g. top-down grasp)."""
 
     # Planning configuration
     enable_graph: bool = True
