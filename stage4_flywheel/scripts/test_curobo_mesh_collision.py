@@ -59,4 +59,14 @@ try:
 except Exception as e:
     print("cc inspect failed:", e)
 
+# Phase 2 (Stage4_Patch_01 §4.3.4): report loaded collision spheres from the CudaRobotModel.
+# solver.kinematics is the CudaRobotModel; total_spheres/robot_spheres reflect what cuRobo actually
+# loaded (config collision_spheres are only active for links listed in collision_link_names).
+km = solver.kinematics
+print("\nPhase 2 sphere load check:")
+print("  kinematics.total_spheres:", getattr(km, "total_spheres", "N/A"))
+rs = getattr(km, "robot_spheres", None)
+if rs is not None:
+    print("  kinematics.robot_spheres.shape:", tuple(rs.shape))
+
 print("\nDONE")

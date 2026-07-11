@@ -9,8 +9,21 @@ robot_cfg:
     asset_root_path: "/mnt/robot/lw_benchhub/lw_benchhub/utils/piper_description"
     base_link: "base_link_r"
     ee_link: "gripper_base_r"
-    collision_link_names: []
-    collision_spheres: {}
+    collision_link_names: ["gripper_base_r"]
+    # Phase 2 (Stage4_Patch_01 §4.3.2): gripper collision spheres, inscribed in the actual STL bbox
+    # (gripper_base.STL, link-frame coords). Combined with mesh_link_names below to give cuRobo a
+    # collision model for the gripper so the approach path does not plow through the bowl.
+    #
+    # Spheres are only added on `gripper_base_r` (the EE link). link7_r/link8_r are the gripper
+    # fingers and are NOT given spheres: cuRobo's sphere builder infers a joint name `joint7_r` from
+    # `link7_r` that does not exist in this URDF (the fingers attach via differently-named joints),
+    # which raises ValueError at config load. The fingers keep their mesh collision via
+    # mesh_link_names. Sphere centers/radii derived from the real gripper_base.STL extent.
+    collision_spheres:
+      gripper_base_r:
+        - {"center": [-0.0045, -0.0485, 0.0315], "radius": 0.0245}
+        - {"center": [-0.0045, 0.0, 0.0315], "radius": 0.0245}
+        - {"center": [-0.0045, 0.0485, 0.0315], "radius": 0.0245}
     collision_sphere_buffer: 0.0
     extra_collision_spheres: {}
     use_global_cumul: False

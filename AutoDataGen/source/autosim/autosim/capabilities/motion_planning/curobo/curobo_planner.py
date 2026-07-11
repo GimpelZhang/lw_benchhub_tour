@@ -86,7 +86,7 @@ class CuroboPlanner:
             use_cuda_graph=self.cfg.use_cuda_graph,
             self_collision_check=self.cfg.self_collision_check,
             self_collision_opt=self.cfg.self_collision_opt,
-            rotation_threshold=math.pi,  # relax rotation (position-priority planning; matches reach-gate IK)
+            rotation_threshold=self.cfg.rotation_threshold,  # pi = position-only; small = honor orientation
             fixed_iters_trajopt=True,
             maximum_trajectory_dt=0.5,
             ik_opt_iters=500,

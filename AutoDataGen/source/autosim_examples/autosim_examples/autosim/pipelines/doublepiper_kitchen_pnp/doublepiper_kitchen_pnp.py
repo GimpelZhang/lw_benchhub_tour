@@ -110,6 +110,13 @@ class DoublePiperKitchenPnpPipeline(AutoSimPipeline):
             robot_base_link_name="root",
             ee_link_name="hand_link_l",  # primary = left; right is handled at runtime
             object_reach_target_poses={
+                # Patch-02: grasp offset for the bowl = 5cm above bowl center (bowl frame), identity
+                # rotation. cuRobo plans position-only (rotation_threshold=pi - see cfg) so the
+                # rotation is not honored; the gripper reaches above the bowl in the solver's default
+                # orientation, whose fingers sit ~0.30m past the bowl -> grasp closes on empty air.
+                # Rotation-constrained planning (to command a top-down grasp) fails at the hover pose
+                # (workspace edge) - see docs/Stage4_Patch_02_report.md. Left at identity so the
+                # pipeline runs end-to-end (6 skills execute, TASK_SUCCESS=False on seed 48).
                 "akita_black_bowl": [torch.tensor([0.0, 0.0, 0.05, 1.0, 0.0, 0.0, 0.0])],
                 "plate": [torch.tensor([0.0, 0.0, 0.05, 1.0, 0.0, 0.0, 0.0])],
             },
@@ -266,10 +273,22 @@ class DoublePiperKitchenPnpPipeline(AutoSimPipeline):
                         f"Pre-grasp hover reach executed.({pre_steps} steps, success={pre_success})"
                     )
                     self._log_object_positions(after_skill="reach_hover")
+                    self._log_ee_vs_bowl("after_reach_hover")
+                    self._log_curobo_ee("after_reach_hover")
                     if pre_done:
                         return PipelineOutput(success=True, generated_actions=self._generated_actions)
                     if not pre_success:
                         raise ValueError("Pre-grasp hover reach failed.")
+
+                    # Patch-02 Issue A fix: the hover reach and the grasp reach reuse the SAME skill
+                    # instance. The hover reach advances skill._step_idx to ~len(hover_traj) (~56).
+                    # Without a reset, the grasp reach re-plans (new ~43-waypoint traj) but _step_idx
+                    # stays at ~56, so ReachSkill.step() immediately returns done=True (56 >= 43) on
+                    # step 1 -> the grasp trajectory NEVER executes -> the arm stays at the hover Z
+                    # (bowl + 0.15 m) instead of descending to the grasp Z (bowl + 0.05 m) -> the
+                    # gripper closes on empty air. Resetting the skill before the grasp reach makes
+                    # _step_idx=0 so the grasp trajectory actually plays out.
+                    skill.reset()
 
                 success, steps, episode_done = self._execute_single_skill(skill, goal)
 
@@ -283,6 +302,9 @@ class DoublePiperKitchenPnpPipeline(AutoSimPipeline):
 
                 self._logger.info(f"Skill {skill_info.skill_type} executed successfully.({steps} steps)")
                 self._log_object_positions(after_skill=skill_info.skill_type)
+                if skill_info.skill_type == "reach" and skill_info.target_object == "akita_black_bowl":
+                    self._log_ee_vs_bowl("after_reach_grasp", goal=goal)
+                    self._log_curobo_ee("after_reach_grasp")
 
             self._logger.info(
                 f"Subtask {subtask.subtask_name} executed successfully with {len(subtask.skills)} skills."
@@ -307,6 +329,87 @@ class DoublePiperKitchenPnpPipeline(AutoSimPipeline):
             )
         except Exception:
             pass
+
+    def _log_ee_vs_bowl(self, label: str, goal=None) -> None:
+        """Patch-02 diagnostic: log active arm EE links vs bowl world pos + the planned grasp target.
+
+        cuRobo plans to `gripper_base_{l,r}` (the wrist); the sim's TCP/sensor link is
+        `hand_link_{l,r}`. If the wrist reaches the grasp-pose offset but the fingers (hand_link)
+        sit elsewhere, the grasp closes on empty air. This logs every relevant link's world pos,
+        the bowl, and (if goal given) the grasp target pose transformed to world, so the mismatch
+        is visible. On the first call it also dumps all arm body names (so we know what the sim
+        actually calls each link).
+        """
+        try:
+            arm = self._current_arm
+            body_names = list(self._robot.data.body_names)
+            side = "l" if arm == "left" else "r"
+            bowl = self._env.scene["akita_black_bowl"].data.root_pos_w[self._env_id][:3].cpu()
+            # Match any body name containing the side suffix or gripper/hand/finger/link7/link8.
+            wanted = [f"gripper_base_{side}", f"hand_link_{side}", f"link8_{side}", f"link7_{side}",
+                      "hand_link", "gripper_base", "finger_link"]
+            seen = set()
+            parts = []
+            for ln in body_names:
+                if any(w in ln for w in wanted) and ln not in seen:
+                    seen.add(ln)
+                    pos = self._robot.data.body_pos_w[self._env_id, body_names.index(ln), :3].cpu().tolist()
+                    parts.append(f"{ln}={[round(x, 3) for x in pos]}")
+            msg = (f"[ee-vs-bowl {label}] arm={arm} bowl={[round(x, 3) for x in bowl.tolist()]} "
+                   + " ".join(parts))
+            # One-time body-name dump for the active arm.
+            if not getattr(self, "_dumped_arm_bodynames", False):
+                arm_links = [n for n in body_names if side in n or "hand" in n or "gripper" in n]
+                msg += f"\n  [body_names {side}] {arm_links}"
+                self._dumped_arm_bodynames = True
+            # Grasp target in world frame (goal.target_pose is [K,7] in robot root frame).
+            if goal is not None and getattr(goal, "target_pose", None) is not None:
+                try:
+                    tp = goal.target_pose[0:1]  # [1,7] robot-root xyz+xyzw
+                    root_pose = as_torch(self._robot.data.root_pose_w)[self._env_id]  # [7] xyz+xyzw
+                    import isaaclab.utils.math as PoseUtils
+                    tgt_world_pos, _ = PoseUtils.combine_frame_transforms(
+                        root_pose[:3].unsqueeze(0), root_pose[3:7].unsqueeze(0),
+                        tp[:, :3], tp[:, 3:7])
+                    msg += f" grasp_target_world={[round(x, 3) for x in tgt_world_pos[0].cpu().tolist()]}"
+                except Exception as e:
+                    msg += f" (grasp_target_conv_err={e})"
+            self._logger.info(msg)
+        except Exception as e:
+            self._logger.warning(f"_log_ee_vs_bowl error: {e}")
+
+    def _log_curobo_ee(self, label: str) -> None:
+        """Patch-02 diagnostic: cuRobo's planned EE (gripper_base) pose via FK at the current q.
+
+        cuRobo plans to `gripper_base_{l,r}` (the wrist), which is NOT a link in the sim's
+        body_names (sim TCP is `hand_link_{l,r}`). To know where the WRIST actually is (vs the
+        hand_link the sim reports), compute cuRobo FK from the current joint config. If the wrist
+        reached the grasp target but hand_link is offset, the bug is the TCP offset; if the wrist
+        itself never reached the target, the bug is a degenerate trajectory.
+        """
+        try:
+            arm = self._current_arm
+            planner = self._planner_right if arm == "right" else self._planner_left
+            sim_joint_names = list(self._robot.data.joint_names)
+            sim_q = as_torch(self._robot.data.joint_pos)[self._env_id]
+            curobo_joint_names = planner.target_joint_names
+            current_q = torch.stack(
+                [sim_q[sim_joint_names.index(jn)] for jn in curobo_joint_names]
+            ).to(device=planner.tensor_args.device, dtype=planner.tensor_args.dtype)
+            ee_pose = planner.get_ee_pose(current_q)  # robot-root frame
+            ee_pos = ee_pose.position.squeeze(0).cpu().tolist()
+            # transform to world via robot root pose
+            root_pose = as_torch(self._robot.data.root_pose_w)[self._env_id]
+            import isaaclab.utils.math as PoseUtils
+            ee_world_pos, _ = PoseUtils.combine_frame_transforms(
+                root_pose[:3].unsqueeze(0), root_pose[3:7].unsqueeze(0),
+                ee_pose.position, ee_pose.quaternion)
+            self._logger.info(
+                f"[curobo-ee {label}] arm={arm} gripper_base_world={[round(x, 3) for x in ee_world_pos[0].cpu().tolist()]} "
+                f"gripper_base_robotroot={[round(x, 3) for x in ee_pos]}"
+            )
+        except Exception as e:
+            self._logger.warning(f"_log_curobo_ee error: {e}")
 
     def _log_diag_summary(self) -> None:
         """§2 pre-check: log max gripper contact force + bowl displacement for reach(bowl)."""
@@ -377,7 +480,21 @@ class DoublePiperKitchenPnpPipeline(AutoSimPipeline):
         plan_success = False
         for attempt in range(self._max_plan_attempts):
             world_state = self._build_world_state()
-            plan_success = skill.plan(world_state, goal)
+            # Patch-02: cuRobo MotionGen's multi-attempt accumulator has a shape bug - across
+            # attempts result.success can be [B,1] in one attempt and [B] in another, so
+            # best_result.copy_idx raises RuntimeError "shape mismatch [N] vs [N,1]". This is
+            # non-fatal: a fresh plan() call starts with best_result=None (clean accumulator).
+            # Catch the RuntimeError here so the outer retry loop gets a fresh plan_batch instead
+            # of aborting the whole episode. (max_planning_attempts=1 avoids the bug but makes
+            # planning too weak to find grasp trajectories, so we keep multi-attempt + catch.)
+            try:
+                plan_success = skill.plan(world_state, goal)
+            except RuntimeError as e:
+                self._logger.warning(
+                    f"Skill plan raised RuntimeError (attempt {attempt + 1}/{self._max_plan_attempts}); "
+                    f"retrying with fresh plan_batch: {e}"
+                )
+                plan_success = False
             if plan_success:
                 break
             self._logger.warning(
@@ -386,6 +503,19 @@ class DoublePiperKitchenPnpPipeline(AutoSimPipeline):
         if not plan_success:
             self._logger.error("Skill plan failed after all retries.")
             return False, 0, False
+
+        # Patch-02 diagnostic: log planned trajectory waypoint count for reach skills. A 1-step
+        # "Skill reach executed successfully" with a long waypoint list means PD lag (the EE did not
+        # reach the target in sim); a 1-waypoint list means the planner produced a degenerate path.
+        try:
+            traj = getattr(skill, "_trajectory", None)
+            if traj is not None and hasattr(traj, "position"):
+                self._logger.info(
+                    f"[traj len] skill={self._diag_label} waypoints={len(traj.position)} "
+                    f"(target_object={self._diag_target_object})"
+                )
+        except Exception:
+            pass
 
         steps = 0
         # §2 diagnostic: reset per-skill accumulators; capture bowl start position.
