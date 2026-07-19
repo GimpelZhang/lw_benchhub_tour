@@ -111,3 +111,6 @@ regress_vstrip_stage2/
 regress_vstrip_stage4/
 # legacy on-disk dir name from before rename (runtime output, gitignored)
 stage2_v6_final_deliverables/
+
+tmp/
+genesis_vla_env.sh
